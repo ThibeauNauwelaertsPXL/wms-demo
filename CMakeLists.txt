@@ -64,6 +64,8 @@ install(TARGETS WMS-integrator
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
+include_directories(spdlog/include)
+
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(WMS-integrator)
 endif()

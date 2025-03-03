@@ -5,6 +5,10 @@
 #include <QWebEngineView>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QSpinBox>
+#include <QLabel>
+#include <QPropertyAnimation>
+#include "spdlog/spdlog.h"
 
 namespace Ui {
 class WebViewWindow;
@@ -19,13 +23,19 @@ public:
     ~WebViewWindow();
 
 private slots:
-    void loadWMS(); // Slot to load the WMS URL
+    void loadWMS();
+    void saveSettings();
 
 private:
     Ui::WebViewWindow *ui;
     QWebEngineView *webView;
     QLineEdit *urlInput;
     QPushButton *loadButton;
+    QSpinBox *portInput;
+    QLabel *toastLabel;
+    QPropertyAnimation *toastAnimation;
+
+    void showToast(const QString &message);
 };
 
 #endif // WEBVIEWWINDOW_H

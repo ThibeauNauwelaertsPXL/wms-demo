@@ -1,6 +1,7 @@
 C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/build/qt_6_10-Debug/WMS-integrator_autogen/EWIEGA46WW/moc_webviewwindow.cpp: C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/webviewwindow.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtCore/QFlags \
   C:/Qt/6.10.0/msvc2022_64/include/QtCore/QList \
+  C:/Qt/6.10.0/msvc2022_64/include/QtCore/QPropertyAnimation \
   C:/Qt/6.10.0/msvc2022_64/include/QtCore/QSizeF \
   C:/Qt/6.10.0/msvc2022_64/include/QtCore/QString \
   C:/Qt/6.10.0/msvc2022_64/include/QtCore/QUrl \
@@ -12,6 +13,7 @@ C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/build/qt_6_
   C:/Qt/6.10.0/msvc2022_64/include/QtCore/q20type_traits.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtCore/q20utility.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtCore/q23utility.h \
+  C:/Qt/6.10.0/msvc2022_64/include/QtCore/qabstractanimation.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtCore/qalgorithms.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtCore/qanystringview.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtCore/qarraydata.h \
@@ -43,6 +45,7 @@ C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/build/qt_6_
   C:/Qt/6.10.0/msvc2022_64/include/QtCore/qdatastream.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtCore/qdatetime.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtCore/qdebug.h \
+  C:/Qt/6.10.0/msvc2022_64/include/QtCore/qeasingcurve.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtCore/qendian.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtCore/qexceptionhandling.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtCore/qflags.h \
@@ -55,6 +58,7 @@ C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/build/qt_6_
   C:/Qt/6.10.0/msvc2022_64/include/QtCore/qglobalstatic.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtCore/qhash.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtCore/qhashfunctions.h \
+  C:/Qt/6.10.0/msvc2022_64/include/QtCore/qiodevice.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtCore/qiodevicebase.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtCore/qiterable.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtCore/qiterator.h \
@@ -80,8 +84,10 @@ C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/build/qt_6_
   C:/Qt/6.10.0/msvc2022_64/include/QtCore/qpair.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtCore/qpoint.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtCore/qprocessordetection.h \
+  C:/Qt/6.10.0/msvc2022_64/include/QtCore/qpropertyanimation.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtCore/qrect.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtCore/qrefcount.h \
+  C:/Qt/6.10.0/msvc2022_64/include/QtCore/qregularexpression.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtCore/qscopedpointer.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtCore/qscopeguard.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtCore/qset.h \
@@ -130,6 +136,7 @@ C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/build/qt_6_
   C:/Qt/6.10.0/msvc2022_64/include/QtCore/qurl.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtCore/qutf8stringview.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtCore/qvariant.h \
+  C:/Qt/6.10.0/msvc2022_64/include/QtCore/qvariantanimation.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtCore/qvarlengtharray.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtCore/qversiontagging.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtCore/qxptype_traits.h \
@@ -153,6 +160,7 @@ C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/build/qt_6_
   C:/Qt/6.10.0/msvc2022_64/include/QtGui/qpaintdevice.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtGui/qpalette.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtGui/qpen.h \
+  C:/Qt/6.10.0/msvc2022_64/include/QtGui/qpicture.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtGui/qpixelformat.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtGui/qpixmap.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtGui/qpolygon.h \
@@ -167,6 +175,7 @@ C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/build/qt_6_
   C:/Qt/6.10.0/msvc2022_64/include/QtGui/qtguiexports.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtGui/qtguiglobal.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtGui/qtransform.h \
+  C:/Qt/6.10.0/msvc2022_64/include/QtGui/qvalidator.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtGui/qwindowdefs.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtGui/qwindowdefs_win.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtNetwork/qssl.h \
@@ -191,17 +200,60 @@ C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/build/qt_6_
   C:/Qt/6.10.0/msvc2022_64/include/QtWebEngineWidgets/QWebEngineView \
   C:/Qt/6.10.0/msvc2022_64/include/QtWebEngineWidgets/qtwebenginewidgetsglobal.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtWebEngineWidgets/qwebengineview.h \
+  C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/QLabel \
   C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/QLineEdit \
   C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/QMainWindow \
   C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/QPushButton \
+  C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/QSpinBox \
   C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qabstractbutton.h \
+  C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qabstractspinbox.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qframe.h \
+  C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qlabel.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qlineedit.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qmainwindow.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qpushbutton.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qsizepolicy.h \
+  C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qspinbox.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qtabwidget.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qtwidgets-config.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qtwidgetsexports.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qtwidgetsglobal.h \
-  C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qwidget.h
+  C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qwidget.h \
+  C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/common-inl.h \
+  C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/common.h \
+  C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/details/backtracer-inl.h \
+  C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/details/backtracer.h \
+  C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/details/circular_q.h \
+  C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/details/console_globals.h \
+  C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/details/fmt_helper.h \
+  C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/details/log_msg-inl.h \
+  C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/details/log_msg.h \
+  C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/details/log_msg_buffer-inl.h \
+  C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/details/log_msg_buffer.h \
+  C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/details/null_mutex.h \
+  C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/details/os-inl.h \
+  C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/details/os.h \
+  C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/details/periodic_worker-inl.h \
+  C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/details/periodic_worker.h \
+  C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/details/registry-inl.h \
+  C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/details/registry.h \
+  C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/details/synchronous_factory.h \
+  C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/fmt/bundled/base.h \
+  C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/fmt/bundled/core.h \
+  C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/fmt/bundled/format-inl.h \
+  C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/fmt/bundled/format.h \
+  C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/fmt/fmt.h \
+  C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/formatter.h \
+  C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/logger-inl.h \
+  C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/logger.h \
+  C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/mdc.h \
+  C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/pattern_formatter-inl.h \
+  C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/pattern_formatter.h \
+  C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/sinks/ansicolor_sink-inl.h \
+  C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/sinks/ansicolor_sink.h \
+  C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/sinks/sink-inl.h \
+  C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/sinks/sink.h \
+  C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/spdlog-inl.h \
+  C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/spdlog.h \
+  C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/tweakme.h \
+  C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/version.h

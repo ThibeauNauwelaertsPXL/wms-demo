@@ -1603,6 +1603,7 @@
 	],
 	"MOC_INCLUDES" : 
 	[
+		"C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include",
 		"C:/Qt/6.10.0/msvc2022_64/include/QtCore",
 		"C:/Qt/6.10.0/msvc2022_64/include",
 		"C:/Qt/6.10.0/msvc2022_64/mkspecs/win32-msvc",
