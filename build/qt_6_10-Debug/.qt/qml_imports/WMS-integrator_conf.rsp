@@ -1,0 +1,9 @@
+-rootPath
+C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator
+-cmake-output
+-output-file
+C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/build/qt_6_10-Debug/.qt/qml_imports/WMS-integrator_conf.cmake
+-importPath
+C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/build/qt_6_10-Debug
+-importPath
+C:/Qt/6.10.0/msvc2022_64/qml

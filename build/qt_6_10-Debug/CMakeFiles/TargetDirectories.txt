@@ -1,0 +1,9 @@
+C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/build/qt_6_10-Debug/CMakeFiles/WMS-integrator.dir
+C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/build/qt_6_10-Debug/CMakeFiles/WMS-integrator_qmlimportscan.dir
+C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/build/qt_6_10-Debug/CMakeFiles/edit_cache.dir
+C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/build/qt_6_10-Debug/CMakeFiles/rebuild_cache.dir
+C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/build/qt_6_10-Debug/CMakeFiles/list_install_components.dir
+C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/build/qt_6_10-Debug/CMakeFiles/install.dir
+C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/build/qt_6_10-Debug/CMakeFiles/install/local.dir
+C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/build/qt_6_10-Debug/CMakeFiles/WMS-integrator_autogen_timestamp_deps.dir
+C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/build/qt_6_10-Debug/CMakeFiles/WMS-integrator_autogen.dir
