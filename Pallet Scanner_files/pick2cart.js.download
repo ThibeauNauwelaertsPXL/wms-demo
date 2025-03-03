@@ -1,0 +1,1662 @@
+function Pick2CartViewModel() {
+    var self = this;
+
+    self.cancelMoveDuringPicking = ko.observable(false);
+    self.movePickingType = ko.observable();
+    self.moveDuringPicking = ko.observable(false);
+    self.picklists = ko.observableArray();
+    self.selectedPicklist = ko.observable();
+    self.palletTypes = ko.observableArray();
+    self.allPalletTypes = ko.observableArray();
+    self.showPalletDropdown = ko.observable(false);
+    self.selectedPalletType = ko.observable({
+        Weight: ko.observable(""),
+        Height: ko.observable(""),
+    });
+    self.palletTypeWeightObservable = ko.observable("");
+    self.selectedPicklistLine = ko.observable();
+    self.selectedPicklistLineIndex = ko.observable();
+    self.scannedBarcode = ko.observable("");
+    self.scannedCartId = ko.observable("");
+    self.nextAvailablePicklistLineFound = ko.observable(false);
+    self.scanPalletPicking = ko.observable();
+    self.picklistEndLocation = ko.observable();
+    self.pickingBarcode = ko.observable("");
+    self.multiBarcodes = ko.observableArray();
+    self.pickedWithBarcode = ko.observable(false);
+    self.pickedManually = ko.observable(false);
+    self.barcodeToConfirm = ko.observable();
+    self.nextPicklistToProcess = ko.observable();
+    self.LOECodeOutbound = ko.observable();
+    self.globalPickingType = ko.observable("regular");
+    self.pickingTUID = ko.observable("");
+    self.currentTUID = ko.observable("");
+    self.validateFrom = ko.observable();
+    self.lastScannedLocation = ko.observable("");
+    self.picklistsPIECESMULTILINE = ko.observable(0);
+    self.picklistsPIECES1LINE = ko.observable(0);
+    self.picklistsP2C = ko.observable(0);
+    self.picklistsMIXED = ko.observable(0);
+    self.picklistsFULLPALLET = ko.observable(0);
+    self.picklistsTOTAL = ko.observable(0);
+    self.picklistsINTERNAL = ko.observable(0);
+    self.currentPickingType = ko.observable("");
+    self.pickingSortElement = ko.observable("deadline");
+    self.pickingSortType = ko.observable("asc");
+    self.pickingFilterExpedition = ko.observable("");
+    self.pickingFilterSection = ko.observable("");
+    self.pickingFilterCart = ko.observable("");
+    self.pickingFilterExpeditionArray = ko.observableArray();
+    self.movementFiltersArray = ko.observableArray();
+    self.movementFiltersValue = ko.observable("");
+    self.pickingFilterSectionArray = ko.observableArray();
+    self.pickingFilterCartArray = ko.observableArray([
+        "With cart",
+        "Without cart",
+    ]);
+    self.oldPickingType = ko.observable("");
+    self.scanBox = ko.observable("");
+    self.usePredefinedCarriers = ko.observable("false");
+
+    self.cartLocationShow = ko.observable("");
+
+    /**
+     * Update the amount of the selected picklist line
+     * @param explicitQuantity
+     */
+    self.updatePickingQuantity = function (explicitQuantity, bypasstuid) {
+        if (self.globalPickingType() == "pickToCart") {
+            var show_tu_id_scan = true;
+            $.each(
+                self.selectedPicklist().combinedPicklists,
+                function (index, currentPicklist) {
+                    if (
+                        currentPicklist.PicklistId ==
+                        self.selectedPicklistLine().PicklistId
+                    ) {
+                        if (currentPicklist.OpenCarrierPresent == "false") {
+                            show_tu_id_scan = true;
+                        }
+                    }
+                }
+            );
+        }
+
+        if (show_tu_id_scan && explicitQuantity != "0" && bypasstuid != true) {
+            self.validateFrom("confirm_manually");
+            self.pickingTUID("");
+
+            if (self.usePredefinedCarriers() == "true") {
+                self.cartLocationShow(self.selectedPicklistLine().CartLocation);
+            }
+
+            self.page("validateTUID");
+            setTimeout(function () {
+                $("#pickingTUID").focus();
+            }, 250);
+            return;
+        }
+
+        //since we're dealing with a service call, turn on the loader page
+        self.showLoader(true);
+        //ActionType for updating the quantity is 2
+
+        self.selectedPicklistLine().MaintainQuantity = self
+            .selectedPicklistLine()
+            .QuantityPicked();
+
+        window.boxFound = true;
+
+        if (self.selectedPicklistLine().CheckBoxObservable() == true) {
+            window.boxFound = false;
+            $.each(
+                self.selectedPicklist().Boxes.Box,
+                function (index, currentBox) {
+                    if (currentBox.BoxReference == self.scanBox()) {
+                        window.boxFound = true;
+
+                        self.selectedPicklist().Boxes.Box[
+                            index
+                        ].BoxLines.BoxLine.push({
+                            PicklistId: self.selectedPicklist().PicklistId,
+                            PicklistLineId:
+                                self.selectedPicklistLine().PicklistLineId,
+                            QuantityPEH: parseInt(
+                                self.selectedPicklistLine().QuantityPicked()
+                            ),
+                            Product: self.selectedPicklistLine().Product,
+                            ProductDescription:
+                                self.selectedPicklistLine().ProductName,
+                            EANBarcode: self.selectedPicklistLine().EANBarcode,
+                            BestBeforeDate:
+                                self.selectedPicklistLine().BestBeforeDate,
+                            BestBeforeApplicable:
+                                self.selectedPicklistLine()
+                                    .BestBeforeDateApplicable,
+                        });
+                    }
+                }
+            );
+        }
+
+        //If the quantity picked matched the Remained quantity to pick, force update the FullyPickedObservable to true in order to skip this line next time
+        //It happened in the past that they would pick the entire quantity without checking the FullyPicked button
+        if (
+            self.selectedPicklistLine().QuantityPicked() ==
+            self.selectedPicklistLine().QuantityToPick() -
+                self.selectedPicklistLine().QuantityPickedInitial
+        ) {
+            self.selectedPicklistLine().FullyPickedObservable(true);
+            self.selectedPicklistLine().FullyPicked = "true";
+        }
+
+        if (self.selectedPicklistLine().IsVariableWeightProduct == "true") {
+            if (
+                self.selectedPicklistLine().QuantityPicked2() ==
+                self.selectedPicklistLine().QuantityToPick2() -
+                    self.selectedPicklistLine().QuantityPickedInitial2
+            ) {
+                self.selectedPicklistLine().FullyPickedObservable(true);
+                self.selectedPicklistLine().FullyPicked = "true";
+            }
+        }
+
+        //if explicitQuantity has a value, set it over the QuantityPickedVEH or QuantityPickedPEH attribute
+        //else set QuantityPicked over the QuantityPickedVEH or QuantityPickedPEH attribute
+
+        //VEH or PEH is decided based on VehOrPeh attribute value
+
+        if (self.scannedBarcode() == null) self.scannedBarcode("");
+        if (self.pickingBarcode() == null) self.pickingBarcode("");
+
+        if (self.scannedBarcode() != "" && self.pickingBarcode() != "") {
+            self.selectedPicklistLine().TypeOfValidation = "SLP";
+        } else if (self.scannedBarcode() == "" && self.pickingBarcode() != "") {
+            self.selectedPicklistLine().TypeOfValidation = "SP";
+        } else if (self.scannedBarcode() != "" && self.pickingBarcode() == "") {
+            self.selectedPicklistLine().TypeOfValidation = "SL";
+        } else {
+            self.selectedPicklistLine().TypeOfValidation = "H";
+        }
+
+        if (self.selectedPicklistLine().IsVariableWeightProduct == "false") {
+            var jsonObj = {
+                Scanning_GenericInterfaceClass: {
+                    GUID: self.guid(),
+                    ActionType: 2,
+                    BoxReference:
+                        self.selectedPicklistLine().CheckBoxObservable() == true
+                            ? self.scanBox()
+                            : "",
+                    TUID:
+                        self.globalPickingType() == "regular"
+                            ? ""
+                            : self.currentTUID(),
+                    Picklist:
+                        self.globalPickingType() == "regular"
+                            ? self.selectedPicklist().PicklistId
+                            : self.selectedPicklistLine().PicklistId,
+                    UserId: self.username(),
+                    PicklistLine: self.selectedPicklistLine().PicklistLineId,
+                    QuantityPickedVEH:
+                        explicitQuantity ||
+                        (self.selectedPicklistLine().UseVEHorPEH === "V"
+                            ? self.selectedPicklistLine().QuantityPicked()
+                            : self.selectedPicklistLine().QuantityPickedVEH),
+                    QuantityPickedPEH:
+                        explicitQuantity ||
+                        (self.selectedPicklistLine().UseVEHorPEH === "P" ||
+                        self.selectedPicklistLine().UseVEHorPEH === ""
+                            ? self.selectedPicklistLine().QuantityPicked()
+                            : self.selectedPicklistLine().QuantityPickedPEH),
+                    FullyPicked: explicitQuantity
+                        ? "true"
+                        : self.selectedPicklistLine().FullyPickedObservable(),
+                    PalletFull: self
+                        .selectedPicklistLine()
+                        .PalletFullObservable(),
+                    IsBundledLine: self.selectedPicklistLine().IsBundledLine,
+                    TypeOfValidation:
+                        self.selectedPicklistLine().TypeOfValidation,
+                    LocationBarcode:
+                        self.selectedPicklistLine().LocationBarcode,
+                    Product: self.selectedPicklistLine().Product,
+                    VehOrPeh: self.selectedPicklistLine().UseVEHorPEH || "P",
+                    WarehouseID: self.warehouseId(),
+                    IsBulk: self.selectedPicklistLine().IsBulk,
+                    PalletBarcode: self.selectedPicklistLine().PalletBarcode,
+                    PalletNumber: self.selectedPicklistLine().PalletNumber,
+                    PicklistLineConfirmedManually: self.pickedManually(),
+                    PicklistLineConfirmedByBarcode: self.pickedWithBarcode(),
+                    ValueToValidate: self.barcodeToConfirm(),
+                    IsVariableWeightProduct:
+                        self.selectedPicklistLine().IsVariableWeightProduct,
+                },
+            };
+        } else {
+            var jsonObj = {
+                Scanning_GenericInterfaceClass: {
+                    GUID: self.guid(),
+                    ActionType: 2,
+                    BoxReference:
+                        self.selectedPicklistLine().CheckBoxObservable() == true
+                            ? self.scanBox()
+                            : "",
+                    TUID:
+                        self.globalPickingType() == "regular"
+                            ? ""
+                            : self.currentTUID(),
+                    Picklist:
+                        self.globalPickingType() == "regular"
+                            ? self.selectedPicklist().PicklistId
+                            : self.selectedPicklistLine().PicklistId,
+                    UserId: self.username(),
+                    PicklistLine: self.selectedPicklistLine().PicklistLineId,
+                    QuantityPickedVEH: self
+                        .selectedPicklistLine()
+                        .QuantityPicked2(),
+
+                    QuantityPickedPEH: parseFloat(
+                        self.selectedPicklistLine().QuantityPicked()
+                    ),
+                    FullyPicked: explicitQuantity
+                        ? "true"
+                        : self.selectedPicklistLine().FullyPickedObservable(),
+                    PalletFull: self
+                        .selectedPicklistLine()
+                        .PalletFullObservable(),
+                    IsBundledLine: self.selectedPicklistLine().IsBundledLine,
+                    TypeOfValidation:
+                        self.selectedPicklistLine().TypeOfValidation,
+                    LocationBarcode:
+                        self.selectedPicklistLine().LocationBarcode,
+                    Product: self.selectedPicklistLine().Product,
+                    VehOrPeh: self.selectedPicklistLine().UseVEHorPEH || "P",
+                    WarehouseID: self.warehouseId(),
+                    IsBulk: self.selectedPicklistLine().IsBulk,
+                    PalletBarcode: self.selectedPicklistLine().PalletBarcode,
+                    PalletNumber: self.selectedPicklistLine().PalletNumber,
+                    PicklistLineConfirmedManually: self.pickedManually(),
+                    PicklistLineConfirmedByBarcode: self.pickedWithBarcode(),
+                    ValueToValidate: self.barcodeToConfirm(),
+                    IsVariableWeightProduct:
+                        self.selectedPicklistLine().IsVariableWeightProduct,
+                },
+            };
+        }
+
+        jsonObj = JSON.stringify(jsonObj);
+
+        $.ajax({
+            type: "PUT",
+            url:
+                WS_ROOT +
+                WS.SCANNING_GENERIC_PUT +
+                "?UserID=" +
+                self.username() +
+                "&ConcernCode=" +
+                self.ConcernCode +
+                "&CompanyCode=" +
+                self.CompanyCode,
+            data: jsonObj,
+            contentType: "application/json; charset=utf-8",
+            dataType: "text",
+        })
+            .done(function () {
+                if (!window.boxFound) {
+                    self.selectedPicklist().Boxes.Box.push({
+                        PicklistId: self.selectedPicklist().PicklistId,
+                        BoxReference: self.scanBox(),
+                        BoxLines: {
+                            BoxLine: [
+                                {
+                                    PicklistId:
+                                        self.selectedPicklist().PicklistId,
+                                    PicklistLineId:
+                                        self.selectedPicklistLine()
+                                            .PicklistLineId,
+                                    QuantityPEH: parseInt(
+                                        self
+                                            .selectedPicklistLine()
+                                            .QuantityPicked()
+                                    ),
+                                    Product:
+                                        self.selectedPicklistLine().Product,
+                                    ProductDescription:
+                                        self.selectedPicklistLine().ProductName,
+                                    EANBarcode:
+                                        self.selectedPicklistLine().EANBarcode,
+                                    BestBeforeDate:
+                                        self.selectedPicklistLine()
+                                            .BestBeforeDate,
+                                    BestBeforeApplicable:
+                                        self.selectedPicklistLine()
+                                            .BestBeforeDateApplicable,
+                                },
+                            ],
+                        },
+                    });
+                }
+
+                if (self.globalPickingType() == "pickToCart") {
+                    $.each(
+                        self.selectedPicklist().combinedPicklists,
+                        function (index, currentPicklist) {
+                            if (
+                                currentPicklist.PicklistId ==
+                                self.selectedPicklistLine().PicklistId
+                            ) {
+                                self.selectedPicklist().combinedPicklists[
+                                    index
+                                ].TUID = self.currentTUID();
+                            }
+                        }
+                    );
+                }
+
+                self.showLoader(false);
+                //on success update the FullyPicked attribute value for the selected picklist line
+                self.selectedPicklistLine().FullyPicked =
+                    self.selectedPicklistLine().FullyPickedObservable() ||
+                    explicitQuantity
+                        ? "true"
+                        : "false";
+
+                //on cancel line, set the fully picked to true, so we can go to the next available line.
+                if (explicitQuantity) {
+                    self.selectedPicklistLine().FullyPickedObservable(true);
+                }
+
+                //self.selectedPicklist().PicklistLines.PicklistLine[self.selectedPicklistLineIndex()-1].FullyPicked = (self.selectedPicklistLine().FullyPickedObservable() || explicitQuantity) ? "true" : "false";
+                var quantityPicked = self
+                    .selectedPicklistLine()
+                    .QuantityPicked()
+                    ? self.selectedPicklistLine().QuantityPicked()
+                    : 0;
+                var quantityPickedInitial =
+                    parseFloat(
+                        self.selectedPicklistLine().QuantityPickedInitial
+                    ) + parseFloat(quantityPicked);
+
+                self.selectedPicklistLine().QuantityPickedInitial =
+                    quantityPickedInitial ? quantityPickedInitial : "0";
+
+                var quantityPicked2 = self
+                    .selectedPicklistLine()
+                    .QuantityPicked2()
+                    ? self.selectedPicklistLine().QuantityPicked2()
+                    : 0;
+                var quantityPickedInitial2 =
+                    parseFloat(
+                        self.selectedPicklistLine().QuantityPickedInitial2
+                    ) + parseFloat(quantityPicked2);
+
+                self.selectedPicklistLine().QuantityPickedInitial2 =
+                    quantityPickedInitial2 ? quantityPickedInitial2 : "0";
+
+                //after picking, update the line as not skipped anymore
+                self.selectedPicklist().PicklistLines.PicklistLine[
+                    self.selectedPicklistLineIndex() - 1
+                ].IsLineSkiped = "false";
+                self.selectedPicklistLine().IsLineSkiped = "false";
+
+                if (self.globalPickingType() == "pickToCart") {
+                    $.each(
+                        self.selectedPicklist().combinedPicklists,
+                        function (index, currentPicklist) {
+                            if (
+                                currentPicklist.PicklistId ==
+                                self.selectedPicklistLine().PicklistId
+                            ) {
+                                self.selectedPicklist().OpenCarrierPresent =
+                                    self.selectedPicklist().combinedPicklists[
+                                        index
+                                    ].OpenCarrierPresent;
+                            }
+                        }
+                    );
+                }
+
+                if (self.globalPickingType() == "pickToCart") {
+                    $.each(
+                        self.selectedPicklist().combinedPicklists,
+                        function (index, currentPicklist) {
+                            if (
+                                currentPicklist.PicklistId ==
+                                self.selectedPicklistLine().PicklistId
+                            ) {
+                                self.selectedPicklist().DefaultPickedQuantity =
+                                    self.selectedPicklist().combinedPicklists[
+                                        index
+                                    ].DefaultPickedQuantity;
+                            }
+                        }
+                    );
+                }
+
+                //if we did a picking > 0, set the carrier flag to true
+                if (
+                    self.selectedPicklistLine().QuantityPicked() &&
+                    parseFloat(self.selectedPicklistLine().QuantityPicked()) > 0
+                ) {
+                    self.selectedPicklist().OpenCarrierPresent = "true";
+                }
+
+                //reset some values, because they would've keep their value next time
+                //but take into consideration the flag that will fill the quantity.
+                if (self.selectedPicklist().DefaultPickedQuantity === "true") {
+                    self.selectedPicklistLine().QuantityPicked(
+                        parseFloat(
+                            self.selectedPicklistLine().QuantityToPick()
+                        ) -
+                            parseFloat(
+                                self.selectedPicklistLine()
+                                    .QuantityPickedInitial
+                            )
+                    );
+
+                    if (self.selectedPicklistLine().QuantityPicked() % 1 != 0)
+                        self.selectedPicklistLine().QuantityPicked(
+                            self
+                                .selectedPicklistLine()
+                                .QuantityPicked()
+                                .toFixed(2)
+                        );
+
+                    self.selectedPicklistLine().QuantityPicked2(
+                        parseFloat(
+                            self.selectedPicklistLine().QuantityToPick2()
+                        ) -
+                            parseFloat(
+                                self.selectedPicklistLine()
+                                    .QuantityPickedInitial2
+                            )
+                    );
+                    self.selectedPicklistLine().FullyPickedObservable(true);
+                } else {
+                    self.selectedPicklistLine().QuantityPicked(0);
+                }
+
+                //determine the next unprocessed picklist line
+                self.getNextUnprocessedPicklistLine();
+            })
+            .error(function (xhr, status, error) {
+                //if there's an error set the pickenErrorMessage observable with the message of the error. This will trigger the display of the error page, on top of the normal screen.
+                if (xhr.responseText) {
+                    self.showLoader(false);
+                    var message = JSON.parse(xhr.responseText).message;
+                    self.pickenErrorMessage(message);
+                }
+            })
+            .always(function () {});
+    };
+
+    /**
+     * Determine the next unprocessed picklist line.
+     */
+    self.getNextUnprocessedPicklistLine = function () {
+        //set the nextAvailablePicklistLineFound to false
+        self.nextAvailablePicklistLineFound(false);
+        //find the next unprocessed picklist line, starting from the current position.
+        //skip the skipped lines.
+        for (
+            var i = self.selectedPicklistLineIndex();
+            i < self.selectedPicklist().PicklistLines.PicklistLine.length;
+            i++
+        ) {
+            if (
+                self.selectedPicklist().PicklistLines.PicklistLine[i]
+                    .IsLineSkiped === "false" &&
+                self.selectedPicklist().PicklistLines.PicklistLine[i]
+                    .FullyPicked === "false" &&
+                !self.nextAvailablePicklistLineFound()
+            ) {
+                self.nextAvailablePicklistLineFound(true);
+                //go to the next line only if the current one is fully picked
+                if (self.selectedPicklistLine().FullyPickedObservable()) {
+                    self.selectedPicklistLineIndex(i + 1);
+                }
+            }
+        }
+        //find the next unprocessed picklist line, starting from the first picklist line until the current one.
+        if (!self.nextAvailablePicklistLineFound()) {
+            for (
+                var i = 0;
+                i < self.selectedPicklist().PicklistLines.PicklistLine.length;
+                i++
+            ) {
+                if (
+                    self.selectedPicklist().PicklistLines.PicklistLine[i]
+                        .IsLineSkiped === "false" &&
+                    self.selectedPicklist().PicklistLines.PicklistLine[i]
+                        .FullyPicked === "false" &&
+                    !self.nextAvailablePicklistLineFound()
+                ) {
+                    self.nextAvailablePicklistLineFound(true);
+                    //go to the next line only if the current one is fully picked
+                    if (self.selectedPicklistLine().FullyPickedObservable()) {
+                        self.selectedPicklistLineIndex(i + 1);
+                    }
+                }
+            }
+        }
+
+        //if we didn't find a line that is not fully picked, check in the skipped lines also
+        if (!self.nextAvailablePicklistLineFound()) {
+            for (
+                var i = 0;
+                i < self.selectedPicklist().PicklistLines.PicklistLine.length;
+                i++
+            ) {
+                if (
+                    self.selectedPicklist().PicklistLines.PicklistLine[i]
+                        .FullyPicked === "false" &&
+                    !self.nextAvailablePicklistLineFound()
+                ) {
+                    self.nextAvailablePicklistLineFound(true);
+                    //go to the next line only if the current one is fully picked
+                    if (self.selectedPicklistLine().FullyPickedObservable()) {
+                        self.selectedPicklistLineIndex(i + 1);
+                    }
+                }
+            }
+        }
+
+        if (!self.nextAvailablePicklistLineFound()) {
+            //if there aren't anymore picklist lines to be processed determine if the pallet is marked as full
+            //if (self.selectedPicklistLine().PalletFullObservable()) {
+            if (
+                self.selectedPicklistLine().PalletFullObservable() &&
+                self.selectedPicklist().OpenCarrierPresent === "true"
+            ) {
+                //the pallet is marked as full, open the pallet screen, to insert the necesarry info (height and weight)
+                if (self.globalPickingType() == "regular") {
+                    self.openNewPallet();
+                } else {
+                    self.confirmAddNewPallet();
+                    //self.page("pickenClosePallet");
+                }
+            } else {
+                //warn the user that he needs to close the last pallet
+
+                if (self.usePredefinedCarriers() == "true") {
+                    self.page("pickenProcessPicklist");
+                } else {
+                    self.page("pickenClosePallet");
+                }
+
+                //self.openConfirmProcessPicklist();
+            }
+        } else {
+            //there are more picklist lines to be processed. Determine if the pallet is marked as full
+            if (
+                self.selectedPicklistLine().PalletFullObservable() &&
+                self.selectedPicklist().OpenCarrierPresent === "true"
+            ) {
+                //the pallet is marked as full, open the pallet screen, to insert the necesarry info (height and weight)
+                if (self.globalPickingType() == "regular") {
+                    self.openNewPallet();
+                } else {
+                    self.confirmAddNewPallet();
+                }
+            } else {
+                //the pallet isn't marked as full. Select the next picklist line that is not yet processed.
+                self.selectedPicklistLine(
+                    self.selectedPicklist().PicklistLines.PicklistLine[
+                        self.selectedPicklistLineIndex() - 1
+                    ]
+                );
+
+                if (self.globalPickingType() == "pickToCart") {
+                    $.each(
+                        self.selectedPicklist().combinedPicklists,
+                        function (index, currentPicklist) {
+                            if (
+                                currentPicklist.PicklistId ==
+                                self.selectedPicklistLine().PicklistId
+                            ) {
+                                self.currentTUID(currentPicklist.TUID);
+                            }
+                        }
+                    );
+                }
+
+                if (self.selectedPicklistLine().CheckBoxObservable() == true) {
+                    self.selectedPicklistLine().QuantityPicked(
+                        self.selectedPicklistLine().MaintainQuantity
+                    );
+
+                    if (
+                        self.selectedPicklistLine().QuantityToPick() -
+                            self.selectedPicklistLine().QuantityPickedInitial <
+                        self.selectedPicklistLine().MaintainQuantity
+                    ) {
+                        self.selectedPicklistLine().QuantityPicked(
+                            self.selectedPicklistLine().QuantityToPick() -
+                                self.selectedPicklistLine()
+                                    .QuantityPickedInitial
+                        );
+                    }
+
+                    self.page("pickenAddAmount");
+
+                    setTimeout(function () {
+                        $(".QuantityPicked").focus().select();
+                    }, 100);
+
+                    self.showLoader(false);
+                } else {
+                    //open the picklist line navigation
+                    self.openPicklistLineNavigation();
+                }
+            }
+        }
+    };
+
+    /**
+     * Open the picklist line navigation
+     */
+    self.openPicklistLineNavigation = function () {
+        if (
+            self.selectedPicklist().ProductBarcodeValidation == "true" ||
+            self.selectedPicklist().EANCheckOnly == "true"
+        ) {
+            self.pickingBarcode("");
+            self.hideErrorMessage(0);
+            self.showLoader(true);
+            self.multiBarcodes.removeAll();
+            $.getJSON(
+                WS_ROOT +
+                    WS.GET_ProductBarcode +
+                    "?ConcernCode=" +
+                    self.ConcernCode +
+                    "&CompanyCode=" +
+                    self.CompanyCode +
+                    "&ProductnumberDerived=" +
+                    self.selectedPicklistLine().Product,
+                function (data) {
+                    if (self.globalPickingType() == "pickToCart") {
+                        $.each(
+                            self.selectedPicklist().combinedPicklists,
+                            function (index, currentPicklist) {
+                                if (
+                                    currentPicklist.PicklistId ==
+                                    self.selectedPicklistLine().PicklistId
+                                ) {
+                                    self.selectedPicklist().EnableUseProductPackingbarcode =
+                                        currentPicklist.EnableUseProductPackingbarcode;
+                                }
+                            }
+                        );
+                    }
+
+                    if (
+                        self.selectedPicklist()
+                            .EnableUseProductPackingbarcode == "true"
+                    ) {
+                        if (
+                            data &&
+                            data.PalletScanner_Get_ProductBarcode_root
+                                .MultiBarcodesPerProduct
+                        ) {
+                            if (
+                                !$.isArray(
+                                    data.PalletScanner_Get_ProductBarcode_root
+                                        .MultiBarcodesPerProduct
+                                )
+                            ) {
+                                self.multiBarcodes.push(
+                                    data.PalletScanner_Get_ProductBarcode_root
+                                        .MultiBarcodesPerProduct.Barcode
+                                );
+                            } else {
+                                $.each(
+                                    data.PalletScanner_Get_ProductBarcode_root
+                                        .MultiBarcodesPerProduct,
+                                    function (index, currentBarcode) {
+                                        self.multiBarcodes.push(
+                                            currentBarcode.Barcode
+                                        );
+                                    }
+                                );
+                            }
+                        }
+                    } else {
+                        if (
+                            data &&
+                            data.PalletScanner_Get_ProductBarcode_root
+                                .ProductnummerBarcodes
+                        ) {
+                            if (
+                                !$.isArray(
+                                    data.PalletScanner_Get_ProductBarcode_root
+                                        .ProductnummerBarcodes
+                                )
+                            ) {
+                                self.multiBarcodes.push(
+                                    data.PalletScanner_Get_ProductBarcode_root
+                                        .ProductnummerBarcodes.Barcode
+                                );
+                            } else {
+                                $.each(
+                                    data.PalletScanner_Get_ProductBarcode_root
+                                        .ProductnummerBarcodes,
+                                    function (index, currentBarcode) {
+                                        self.multiBarcodes.push(
+                                            currentBarcode.Barcode
+                                        );
+                                    }
+                                );
+                            }
+                        }
+                    }
+
+                    if (self.selectedPicklist().EANCheckOnly == "true") {
+                        self.page("pickenManualPickingStart");
+                        setTimeout(function () {
+                            $("#pickingBarcode").focus();
+                        }, 250);
+                    } else {
+                        if (
+                            self.globalPickingType() == "pickToCart" &&
+                            self.lastScannedLocation() != "" &&
+                            self.page() != "pickenManualPickingStart"
+                        ) {
+                            if (
+                                self.lastScannedLocation().toUpperCase() ===
+                                    self
+                                        .selectedPicklistLine()
+                                        .LocationBarcode.toUpperCase() ||
+                                self.lastScannedLocation().toUpperCase() ===
+                                    self
+                                        .selectedPicklistLine()
+                                        .PalletBarcode.toUpperCase()
+                            ) {
+                                self.page("pickenManualPickingStart");
+                                setTimeout(function () {
+                                    $("#pickingBarcode").focus();
+                                }, 250);
+                            } else {
+                                self.page("pickenPickingProcess");
+                                self.scannedBarcode("");
+                                setTimeout(function () {
+                                    $("#pickingBarcodeInputNew").focus();
+                                }, 250);
+                            }
+                        } else {
+                            self.page("pickenPickingProcess");
+                            self.scannedBarcode("");
+                            setTimeout(function () {
+                                $("#pickingBarcodeInputNew").focus();
+                            }, 250);
+                        }
+                    }
+                }
+            )
+                .done(function () {
+                    self.showLoader(false);
+                })
+                .error(function (xhr, status, error) {
+                    if (xhr.responseText) {
+                        var message = JSON.parse(xhr.responseText).message;
+                        self.errorMessage(message);
+                        self.hideErrorMessage();
+                    }
+                })
+                .always(function () {
+                    self.showLoader(false);
+                });
+        } else {
+            self.successMessage(false);
+            self.errorMessage(null);
+
+            if (
+                self.globalPickingType() == "pickToCart" &&
+                self.lastScannedLocation() != "" &&
+                self.page() != "pickenManualPickingStart"
+            ) {
+                if (
+                    self.lastScannedLocation().toUpperCase() ===
+                        self
+                            .selectedPicklistLine()
+                            .LocationBarcode.toUpperCase() ||
+                    self.lastScannedLocation().toUpperCase() ===
+                        self.selectedPicklistLine().PalletBarcode.toUpperCase()
+                ) {
+                    self.page("pickenManualPickingStart");
+                    setTimeout(function () {
+                        $("#pickingBarcode").focus();
+                    }, 250);
+                } else {
+                    self.page("pickenPickingProcess");
+                    self.scannedBarcode(null);
+                    //focus the barcode input
+                    setTimeout(function () {
+                        $(".scannedBarcode").focus().select();
+                    }, 100);
+                }
+            } else {
+                self.page("pickenPickingProcess");
+                self.scannedBarcode(null);
+                //focus the barcode input
+                setTimeout(function () {
+                    $(".scannedBarcode").focus().select();
+                }, 100);
+            }
+        }
+
+        //reset buttons pallet full and fully picked
+        self.selectedPicklistLine().FullyPickedObservable(false);
+        self.selectedPicklistLine().PalletFullObservable(false);
+    };
+
+    self.detectedChangeOnQuantity2 = function (event) {
+        if (event.which != 13) {
+            if (self.selectedPicklistLine().DoesntAllowDecimals == "true") {
+                if (
+                    self.selectedPicklistLine().QuantityPicked2() &&
+                    self
+                        .selectedPicklistLine()
+                        .QuantityPicked2()
+                        .replace(/\D/g, "") !=
+                        self.selectedPicklistLine().QuantityPicked2()
+                ) {
+                    self.selectedPicklistLine().QuantityPicked2(
+                        self
+                            .selectedPicklistLine()
+                            .QuantityPicked2()
+                            .replace(/\D/g, "")
+                    );
+                    //return false;
+                }
+            } else {
+                self.selectedPicklistLine().QuantityPicked2(
+                    self
+                        .selectedPicklistLine()
+                        .QuantityPicked2()
+                        .replace(",", ".")
+                );
+            }
+
+            if (
+                parseFloat(
+                    self.selectedPicklistLine().QuantityPicked()
+                ).toFixed(2) ==
+                parseFloat(
+                    self.selectedPicklistLine().QuantityToPick() -
+                        self.selectedPicklistLine().QuantityPickedInitial
+                ).toFixed(2)
+            ) {
+                //mark the line as fully picked
+                self.selectedPicklistLine().FullyPickedObservable(true);
+            } else {
+                self.selectedPicklistLine().FullyPickedObservable(false);
+            }
+
+            if (self.selectedPicklistLine().FullyPickedObservable() == false) {
+                if (
+                    self.selectedPicklistLine().IsVariableWeightProduct ==
+                    "true"
+                ) {
+                    if (
+                        self.selectedPicklistLine().QuantityPicked2() ==
+                        self.selectedPicklistLine().QuantityToPick2() -
+                            self.selectedPicklistLine().QuantityPickedInitial2
+                    ) {
+                        self.selectedPicklistLine().FullyPickedObservable(true);
+                    }
+                }
+            }
+
+            //return true is to Allow the default action (which is textInput update data-binding) on the input
+            return true;
+        }
+    };
+
+    self.detectedChangeOnQuantity = function (event) {
+        if (event.which != 13) {
+            if (self.selectedPicklistLine().DoesntAllowDecimals == "true") {
+                if (
+                    self.selectedPicklistLine().QuantityPicked() &&
+                    self
+                        .selectedPicklistLine()
+                        .QuantityPicked()
+                        .replace(/\D/g, "") !=
+                        self.selectedPicklistLine().QuantityPicked()
+                ) {
+                    self.selectedPicklistLine().QuantityPicked(
+                        self
+                            .selectedPicklistLine()
+                            .QuantityPicked()
+                            .replace(/\D/g, "")
+                    );
+                }
+            } else {
+                self.selectedPicklistLine().QuantityPicked(
+                    self
+                        .selectedPicklistLine()
+                        .QuantityPicked()
+                        .replace(",", ".")
+                );
+            }
+
+            // Check box observable
+            if (
+                self.selectedPicklist().CollectBoxInfoDuringPickProcess ==
+                    "true" &&
+                parseFloat(
+                    self.selectedPicklistLine().QuantityPicked()
+                ).toFixed(2) > 0
+            ) {
+                self.selectedPicklistLine().CheckBoxObservable(true);
+            } else {
+                self.selectedPicklistLine().CheckBoxObservable(false);
+            }
+
+            //if the value entered matches the quantity to pick, mark it as fully picked
+            if (
+                parseFloat(
+                    self.selectedPicklistLine().QuantityPicked()
+                ).toFixed(2) ==
+                parseFloat(
+                    self.selectedPicklistLine().QuantityToPick() -
+                        self.selectedPicklistLine().QuantityPickedInitial
+                ).toFixed(2)
+            ) {
+                //mark the line as fully picked
+                self.selectedPicklistLine().FullyPickedObservable(true);
+            } else {
+                self.selectedPicklistLine().FullyPickedObservable(false);
+            }
+
+            if (self.selectedPicklistLine().FullyPickedObservable() == false) {
+                if (
+                    self.selectedPicklistLine().IsVariableWeightProduct ==
+                    "true"
+                ) {
+                    if (
+                        self.selectedPicklistLine().QuantityPicked2() ==
+                        self.selectedPicklistLine().QuantityToPick2() -
+                            self.selectedPicklistLine().QuantityPickedInitial2
+                    ) {
+                        self.selectedPicklistLine().FullyPickedObservable(true);
+                    }
+                }
+            }
+
+            //return true is to Allow the default action (which is textInput update data-binding) on the input
+            return true;
+        }
+    };
+
+    /**
+     * Display the picklist details screen
+     * @param picklistId
+     */
+    self.openPicklistDetails = function (picklistId) {
+        // reset wrong scanned picklist message
+        self.wrongPicklistMessage = ko.observable("");
+        self.successMessage(false);
+        self.errorMessage(null);
+        if (typeof picklistId === "object") {
+            if (self.globalPickingType() == "regular") {
+                picklistId = self.selectedPicklist().PicklistId;
+            } else {
+                picklistId = self.selectedPicklist().PickToCartGroupId;
+            }
+        }
+
+        self.page("pickenPicklistDetails");
+
+        if (self.usePredefinedCarriers() == "true") {
+            setTimeout(function () {
+                $("#cartIdInput").focus();
+            }, 250);
+        }
+
+        self.selectedPicklist(null);
+        self.getScanningPicklistDetails(picklistId);
+    };
+
+    /**
+     * Get the picklist details from service
+     * @param picklistId
+     */
+    self.getScanningPicklistDetails = function (picklistId) {
+        self.showLoader(true);
+
+        var json_url =
+            WS_ROOT +
+            WS.GET_SCANNING_PICKLIST_DETAILS +
+            "?Picklist=" +
+            picklistId +
+            "&ConcernCode=" +
+            self.ConcernCode +
+            "&CompanyCode=" +
+            self.CompanyCode;
+
+        if (self.globalPickingType() == "pickToCart") {
+            var section_code = "";
+
+            $.each(self.picklists(), function (key, current_picklist) {
+                if (typeof current_picklist.PickToCartGroupId !== "undefined") {
+                    if (current_picklist.PickToCartGroupId == picklistId) {
+                        section_code = self.picklists()[key].SectionCode;
+                    }
+                } else {
+                    if (current_picklist.PicklistId == picklistId) {
+                        section_code = self.picklists()[key].SectionCode;
+                    }
+                }
+            });
+
+            var json_url =
+                WS_ROOT +
+                WS.GET_SCANNING_PICKLIST_DETAILS_PICKTOCART +
+                "?PickToCartGroupId=" +
+                picklistId +
+                "&WarehouseCode=" +
+                self.warehouseId() +
+                "&SectionCode=" +
+                section_code +
+                "&ConcernCode=" +
+                self.ConcernCode +
+                "&CompanyCode=" +
+                self.CompanyCode;
+        }
+
+        $.getJSON(json_url, function (data) {
+            if (
+                (data &&
+                    data.Scanning_Picklist &&
+                    data.Scanning_Picklist.Picklist) ||
+                (data &&
+                    data.PickToCartPicklist &&
+                    data.PickToCartPicklist.Scanning_Picklists)
+            ) {
+                var picklist = "";
+                if (self.globalPickingType() == "pickToCart") {
+                    $.each(self.picklists(), function (key, current_picklist) {
+                        if (
+                            typeof current_picklist.PickToCartGroupId !==
+                            "undefined"
+                        ) {
+                            if (
+                                current_picklist.PickToCartGroupId == picklistId
+                            ) {
+                                picklist = self.picklists()[key];
+                            }
+                        } else {
+                            if (current_picklist.PicklistId == picklistId) {
+                                picklist = self.picklists()[key];
+                                picklist.PickToCartGroupId =
+                                    self.picklists()[key].PicklistId;
+                            }
+                        }
+                    });
+
+                    picklist.PicklistLines =
+                        data.PickToCartPicklist.PicklistLines;
+                    picklist.combinedPicklists =
+                        data.PickToCartPicklist.Scanning_Picklists.Scanning_Picklist;
+                    picklist.NoOfLines =
+                        picklist.PicklistLines.PicklistLine.length;
+                    picklist.UsePicklistPalletType = "false";
+                    picklist.DefaultPallet = "";
+                    picklist.Instructions = "";
+                    picklist.MaxPalletHeight = 0;
+                    picklist.DisplayNumberOfEmptyBoxes = "false";
+                    picklist.EmptyBoxes = "";
+                    picklist.PicklistId =
+                        picklist.PicklistLines.PicklistLine[0].PicklistId;
+                    picklist.PicklistIdToSend =
+                        picklist.PicklistLines.PicklistLine[0].PicklistId;
+                    picklist.UsePredefinedCarriers =
+                        data.PickToCartPicklist.Scanning_Picklists.Scanning_Picklist[0].UsePredefinedCarriers;
+                    self.usePredefinedCarriers(
+                        data.PickToCartPicklist.Scanning_Picklists
+                            .Scanning_Picklist[0].UsePredefinedCarriers
+                    );
+                } else {
+                    picklist = data.Scanning_Picklist.Picklist;
+                    picklist.UsePredefinedCarriers = "false";
+                    self.usePredefinedCarriers("false");
+                }
+
+                if (self.globalPickingType() == "regular") {
+                    self.picklistEndLocation(
+                        data.Scanning_Picklist.Picklist.EndLocation
+                    );
+                } else {
+                    self.picklistEndLocation(picklist.EndLocation);
+                }
+                //based on the AlreadyStarted value (Date value or nil) set Started. This is used when displaying the picklist details.
+
+                if (typeof picklist.AlreadyStarted === "string") {
+                    picklist.Started = "JA";
+                } else {
+                    picklist.Started = "NEE";
+                }
+
+                self.movePickingType("");
+                self.moveDuringPicking(false);
+
+                if (self.globalPickingType() == "regular") {
+                    if (
+                        picklist.Picklisttype == 2 ||
+                        picklist.Picklisttype == 4
+                    ) {
+                        if (
+                            picklist.MovePalletsDuringInternalPicking == "true"
+                        ) {
+                            self.movePickingType("Internal");
+                            self.moveDuringPicking(true);
+                        }
+                    } else {
+                        if (picklist.MovePalletsDuringPickin == "true") {
+                            self.moveDuringPicking(true);
+                        }
+                    }
+                }
+
+                picklist.Transport =
+                    picklist.TransportNr +
+                    "-" +
+                    picklist.TransporShipmentNumber;
+                picklist.WeightDisplayed = picklist.Weight + " kg";
+                picklist.Date = "-";
+                if (
+                    picklist.Deadline &&
+                    picklist.Deadline.split("T").length > 0 &&
+                    picklist.Deadline.split("T")[1].split(":").length > 0
+                ) {
+                    //set the Date that is displayed like:
+                    picklist.Date =
+                        picklist.Deadline.split("T")[0] +
+                        " " +
+                        picklist.Deadline.split("T")[1].split(":")[0] +
+                        ":" +
+                        picklist.Deadline.split("T")[1].split(":")[1];
+                }
+                if (
+                    picklist.PicklistLines &&
+                    picklist.PicklistLines.PicklistLine
+                ) {
+                    var quantityToPick = 0;
+                    var quantityToPick2 = 0;
+                    $.each(
+                        picklist.PicklistLines.PicklistLine,
+                        function (key, picklistLine) {
+                            if (
+                                picklistLine.IsVariableWeightProduct == "false"
+                            ) {
+                                picklistLine.QuantityToPick2 =
+                                    ko.observable("");
+                                picklistLine.QuantityPicked2 =
+                                    ko.observable("");
+                                picklistLine.QuantityPickedInitial2 = "";
+                                picklistLine.UnitMeasurement2 = "";
+
+                                if (picklistLine.IsContentOnlyYN == "true") {
+                                    quantityToPick +=
+                                        1 * picklistLine.QuantityToPickPEH;
+                                }
+
+                                //for each picklist line set, based on UserVEHorPEH, as observables the QuantityToPick, QuantityPicked and UnitMeasurement
+                                if (
+                                    picklistLine.UseVEHorPEH === "P" ||
+                                    picklistLine.UseVEHorPEH === ""
+                                ) {
+                                    picklistLine.QuantityToPick = ko.observable(
+                                        picklistLine.QuantityToPickPEH
+                                    );
+                                    picklistLine.QuantityPicked =
+                                        picklist.DefaultPickedQuantity ===
+                                        "true"
+                                            ? ko.observable(
+                                                  parseFloat(
+                                                      picklistLine.QuantityToPickPEH
+                                                  ) -
+                                                      parseFloat(
+                                                          picklistLine.QuantityPickedPEH
+                                                      )
+                                              )
+                                            : ko.observable(0);
+                                    picklistLine.QuantityPickedInitial =
+                                        picklistLine.QuantityPickedPEH;
+                                    picklistLine.UnitMeasurement =
+                                        picklistLine.UnitMeasurementPEH;
+                                } else {
+                                    picklistLine.QuantityToPick = ko.observable(
+                                        picklistLine.QuantityToPickVEH
+                                    );
+                                    picklistLine.QuantityPicked =
+                                        picklist.DefaultPickedQuantity ===
+                                        "true"
+                                            ? ko.observable(
+                                                  parseFloat(
+                                                      picklistLine.QuantityToPickVEH
+                                                  ) -
+                                                      parseFloat(
+                                                          picklistLine.QuantityPickedVEH
+                                                      )
+                                              )
+                                            : ko.observable(0);
+                                    picklistLine.QuantityPickedInitial =
+                                        picklistLine.QuantityPickedVEH;
+                                    picklistLine.UnitMeasurement =
+                                        picklistLine.UnitMeasurementVEH;
+                                }
+                            }
+                            // IF IsVariableWeightProduct is true, show both PEH and VEH
+                            else {
+                                if (picklistLine.IsContentOnlyYN == "true") {
+                                    quantityToPick +=
+                                        1 * picklistLine.QuantityToPickPEH;
+                                }
+
+                                picklistLine.QuantityToPick = ko.observable(
+                                    picklistLine.QuantityToPickPEH
+                                );
+                                picklistLine.QuantityPicked =
+                                    picklist.DefaultPickedQuantity === "true"
+                                        ? ko.observable(
+                                              parseFloat(
+                                                  picklistLine.QuantityToPickPEH
+                                              ) -
+                                                  parseFloat(
+                                                      picklistLine.QuantityPickedPEH
+                                                  )
+                                          )
+                                        : ko.observable(0);
+                                picklistLine.QuantityPickedInitial =
+                                    picklistLine.QuantityPickedPEH;
+                                picklistLine.UnitMeasurement =
+                                    picklistLine.UnitMeasurementPEH;
+
+                                if (picklistLine.IsContentOnlyYN == "true") {
+                                    quantityToPick2 +=
+                                        1 * picklistLine.QuantityToPickVEH;
+                                }
+
+                                picklistLine.QuantityToPick2 = ko.observable(
+                                    picklistLine.QuantityToPickVEH
+                                );
+                                picklistLine.QuantityPicked2 =
+                                    picklist.DefaultPickedQuantity === "true"
+                                        ? ko.observable(
+                                              parseFloat(
+                                                  picklistLine.QuantityToPickVEH
+                                              ) -
+                                                  parseFloat(
+                                                      picklistLine.QuantityPickedVEH
+                                                  )
+                                          )
+                                        : ko.observable(0);
+                                picklistLine.QuantityPickedInitial2 =
+                                    picklistLine.QuantityPickedVEH;
+                                picklistLine.UnitMeasurement2 =
+                                    picklistLine.UnitMeasurementVEH;
+                            }
+
+                            if (picklistLine.QuantityPicked() % 1 != 0)
+                                picklistLine.QuantityPicked(
+                                    picklistLine.QuantityPicked().toFixed(2)
+                                );
+
+                            //set as observable FullyPicked and PalletFull.
+                            picklistLine.FullyPickedObservable = ko.observable(
+                                picklistLine.FullyPicked === "true"
+                            );
+                            picklistLine.PalletFullObservable =
+                                ko.observable(false);
+                            picklistLine.CheckBoxObservable =
+                                ko.observable(false);
+                            //set the date (BestBeforeDate) and format it
+                            if (
+                                picklistLine.BestBeforeDateApplicable === "true"
+                            ) {
+                                var initialDate = new Date(
+                                        picklistLine.BestBeforeDate
+                                    ),
+                                    formattedDate = "";
+
+                                if (initialDate.getFullYear() == 5555) {
+                                    formattedDate = "-";
+                                } else {
+                                    formattedDate =
+                                        ("0" + initialDate.getDate()).slice(
+                                            -2
+                                        ) +
+                                        "-" +
+                                        (
+                                            "0" +
+                                            (initialDate.getMonth() + 1)
+                                        ).slice(-2) +
+                                        "-" +
+                                        initialDate.getFullYear();
+                                }
+                                picklistLine.BestBeforeDate = formattedDate;
+                            }
+                            //set the Instructions based on information from the picklist (WholePallet)
+                            picklistLine.Instructions = "-";
+                            /*if (picklist.Translation) {
+              picklistLine.Instructions = picklistLine.WholePalet === 'true' ? picklist.Translation.WholePallet : picklist.Translation.Packing;
+            }*/
+                            if (picklistLine.NumberOfPackagesDescription) {
+                                picklistLine.Instructions =
+                                    picklistLine.NumberOfPackagesDescription;
+                            }
+                        }
+                    );
+                }
+
+                if (quantityToPick >= parseInt(picklist.ThresholdNumber)) {
+                    picklist.PicklistLines.PicklistLine.sort(function (x, y) {
+                        // true values first
+                        return x.IsContentOnlyYN === y.IsContentOnlyYN
+                            ? 0
+                            : x.IsContentOnlyYN == "true"
+                            ? -1
+                            : 1;
+                        //return (x.IsContentOnlyYN === y.IsContentOnlyYN)? (x.PicklistLineId > y.PicklistLineId ? 0 : 1) : x.IsContentOnlyYN == "true" ? -2 : -1;
+                    });
+                }
+
+                self.selectedPalletType({
+                    Height: ko.observable(""),
+                    Weight: ko.observable(""),
+                    Name: ko.observable(""),
+                    PalletType: null,
+                });
+
+                self.selectedPicklist(picklist);
+
+                if (self.selectedPicklist().UsePicklistPalletType === "true") {
+                    $.each(self.allPalletTypes(), function (key, pallet) {
+                        if (
+                            pallet.PalletType ===
+                            self.selectedPicklist().DefaultPallet
+                        ) {
+                            self.selectPalletType(pallet);
+                        }
+                    });
+                }
+
+                self.nextPicklistToProcess("");
+                if (
+                    self.selectedPicklist().DisplayAndAssignNextPicklist ==
+                    "true"
+                ) {
+                    $.each(self.picklists(), function (index, currentPicklist) {
+                        if (
+                            currentPicklist.PicklistId !=
+                            self.selectedPicklist().PicklistId
+                        ) {
+                            self.nextPicklistToProcess(
+                                currentPicklist.PicklistId
+                            );
+                            return false;
+                        }
+                    });
+                }
+            }
+        }).always(function () {
+            self.showLoader(false);
+        });
+    };
+
+    /**
+     * Select the value when clicking on the QuantityPicked input.
+     */
+    self.selectValue = function (focusClass) {
+        $(focusClass).select();
+    };
+
+    /**
+     * Mark a picklist line as fully picked
+     */
+    self.markPicklistLineAsFullyPicked = function () {
+        self.selectedPicklistLine().FullyPickedObservable(
+            !self.selectedPicklistLine().FullyPickedObservable()
+        );
+    };
+
+    /**
+     * Mark a pallet as full
+     */
+    self.markPalletAsFull = function () {
+        self.selectedPicklistLine().PalletFullObservable(
+            !self.selectedPicklistLine().PalletFullObservable()
+        );
+    };
+
+    /**
+     * Update the picked amount
+     */
+    self.updatePickedAmount = function () {
+        //only update if the line is marked as fully picked or/and the pallet if marked as full and the quantity if not 0
+        //removed check that did not allow update if the quantity was 0 (requested)
+        if (
+            !(
+                self.selectedPicklistLine().FullyPickedObservable() ||
+                self.selectedPicklistLine().PalletFullObservable() ||
+                self.selectedPicklistLine().CheckBoxObservable()
+            )
+        ) {
+            return;
+        }
+
+        if (self.selectedPicklistLine().CheckBoxObservable() == true) {
+            self.scanBox("");
+            self.page("scanBox");
+            setTimeout(function () {
+                $("#pickingScanBox").focus().select();
+            }, 100);
+        } else {
+            self.updatePickingQuantity();
+        }
+    };
+
+    self.openPickenChooseType = function () {
+        self.showLoader(true);
+
+        self.picklistsPIECESMULTILINE(0);
+        self.picklistsPIECES1LINE(0);
+        self.picklistsP2C(0);
+        self.picklistsMIXED(0);
+        self.picklistsFULLPALLET(0);
+        self.picklistsTOTAL(0);
+        self.picklistsINTERNAL(0);
+
+        var json_url =
+            WS_ROOT +
+            WS.GET_SCANNING_PICKLISTS +
+            "?Warehouse=" +
+            self.warehouseId() +
+            "&User=" +
+            self.loggedIn() +
+            "&ConcernCode=" +
+            self.ConcernCode +
+            "&CompanyCode=" +
+            self.CompanyCode;
+
+        $.getJSON(json_url, function (data) {
+            if (data && data.ScanningPicklist) {
+                var picklists = data,
+                    filteredPicklists = [],
+                    filteredPicklistsAssigned = [],
+                    filteredPicklistsFinal = [];
+
+                if (picklists.ScanningPicklist) {
+                    if (
+                        picklists.ScanningPicklist
+                            .ListOfAllowedSectionsForUser &&
+                        picklists.ScanningPicklist.ListOfAllowedSectionsForUser
+                            .AllowedSectionForUser
+                    ) {
+                        //go through all picklists
+                        $.each(
+                            picklists.ScanningPicklist
+                                .ListOfAllowedSectionsForUser &&
+                                picklists.ScanningPicklist
+                                    .ListOfAllowedSectionsForUser
+                                    .AllowedSectionForUser,
+                            function (index, line) {
+                                if (
+                                    line.ListOfUnassignedPicklists &&
+                                    line.ListOfUnassignedPicklists
+                                        .UnassignedPicklist &&
+                                    line.ListOfUnassignedPicklists
+                                        .UnassignedPicklist.length > 0
+                                ) {
+                                    //go through picklists with assigned users
+                                    $.each(
+                                        line.ListOfUnassignedPicklists
+                                            .UnassignedPicklist,
+                                        function (i, picklistObj) {
+                                            if (
+                                                picklistObj.PicklistCompositionType ==
+                                                "PIECESMULTILINE"
+                                            ) {
+                                                self.picklistsPIECESMULTILINE(
+                                                    self.picklistsPIECESMULTILINE() +
+                                                        1
+                                                );
+                                                self.picklistsTOTAL(
+                                                    self.picklistsTOTAL() + 1
+                                                );
+                                            } else if (
+                                                picklistObj.PicklistCompositionType ==
+                                                "PIECES1LINE"
+                                            ) {
+                                                self.picklistsPIECES1LINE(
+                                                    self.picklistsPIECES1LINE() +
+                                                        1
+                                                );
+                                                self.picklistsTOTAL(
+                                                    self.picklistsTOTAL() + 1
+                                                );
+                                            } else if (
+                                                picklistObj.PicklistCompositionType ==
+                                                "P2C"
+                                            ) {
+                                                self.picklistsP2C(
+                                                    self.picklistsP2C() + 1
+                                                );
+                                            } else if (
+                                                picklistObj.PicklistCompositionType ==
+                                                "INTERNAL"
+                                            ) {
+                                                self.picklistsINTERNAL(
+                                                    self.picklistsINTERNAL() + 1
+                                                );
+                                            } else if (
+                                                picklistObj.PicklistCompositionType ==
+                                                "MIXED"
+                                            ) {
+                                                self.picklistsMIXED(
+                                                    self.picklistsMIXED() + 1
+                                                );
+                                                self.picklistsTOTAL(
+                                                    self.picklistsTOTAL() + 1
+                                                );
+                                            } else if (
+                                                picklistObj.PicklistCompositionType ==
+                                                "FULLPALLET"
+                                            ) {
+                                                self.picklistsFULLPALLET(
+                                                    self.picklistsFULLPALLET() +
+                                                        1
+                                                );
+                                                self.picklistsTOTAL(
+                                                    self.picklistsTOTAL() + 1
+                                                );
+                                            }
+                                        }
+                                    );
+                                }
+                                if (
+                                    line.ListOfAssignedPicklists &&
+                                    line.ListOfAssignedPicklists
+                                        .AssignedPicklist &&
+                                    line.ListOfAssignedPicklists
+                                        .AssignedPicklist.length > 0
+                                ) {
+                                    //go through picklists with empty user
+                                    $.each(
+                                        line.ListOfAssignedPicklists
+                                            .AssignedPicklist,
+                                        function (i, picklistObj) {
+                                            if (
+                                                picklistObj.PicklistCompositionType ==
+                                                "PIECESMULTILINE"
+                                            ) {
+                                                self.picklistsPIECESMULTILINE(
+                                                    self.picklistsPIECESMULTILINE() +
+                                                        1
+                                                );
+                                                self.picklistsTOTAL(
+                                                    self.picklistsTOTAL() + 1
+                                                );
+                                            } else if (
+                                                picklistObj.PicklistCompositionType ==
+                                                "PIECES1LINE"
+                                            ) {
+                                                self.picklistsPIECES1LINE(
+                                                    self.picklistsPIECES1LINE() +
+                                                        1
+                                                );
+                                                self.picklistsTOTAL(
+                                                    self.picklistsTOTAL() + 1
+                                                );
+                                            } else if (
+                                                picklistObj.PicklistCompositionType ==
+                                                "P2C"
+                                            ) {
+                                                self.picklistsP2C(
+                                                    self.picklistsP2C() + 1
+                                                );
+                                            } else if (
+                                                picklistObj.PicklistCompositionType ==
+                                                "INTERNAL"
+                                            ) {
+                                                self.picklistsINTERNAL(
+                                                    self.picklistsINTERNAL() + 1
+                                                );
+                                            } else if (
+                                                picklistObj.PicklistCompositionType ==
+                                                "MIXED"
+                                            ) {
+                                                self.picklistsMIXED(
+                                                    self.picklistsMIXED() + 1
+                                                );
+                                                self.picklistsTOTAL(
+                                                    self.picklistsTOTAL() + 1
+                                                );
+                                            } else if (
+                                                picklistObj.PicklistCompositionType ==
+                                                "FULLPALLET"
+                                            ) {
+                                                self.picklistsFULLPALLET(
+                                                    self.picklistsFULLPALLET() +
+                                                        1
+                                                );
+                                                self.picklistsTOTAL(
+                                                    self.picklistsTOTAL() + 1
+                                                );
+                                            }
+                                        }
+                                    );
+                                }
+                            }
+                        );
+                    }
+                    self.page("menuPickingType");
+                }
+            }
+        }).always(function () {
+            self.showLoader(false);
+        });
+    };
+}

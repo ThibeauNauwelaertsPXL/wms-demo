@@ -1,0 +1,2176 @@
+<!DOCTYPE html>
+<!-- saved from url=(0101)https://bsibitgreentest.bs-international.nl/BiTGreenTesTPalletScanner/?ConcernCode=41&?CompanyCode=40 -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <!-- Prevent the index.html file from being cached -->
+        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+        <meta http-equiv="Pragma" content="no-cache">
+        <meta http-equiv="Expires" content="0">
+
+        
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Pallet Scanner</title>
+        <link href="./Pallet Scanner_files/index.css" rel="stylesheet" type="text/css">
+        <link rel="shortcut icon" href="https://bsibitgreentest.bs-international.nl/BiTGreenTesTPalletScanner/?ConcernCode=41&amp;?CompanyCode=40#">
+        <script>
+
+          document.addEventListener("DOMContentLoaded", (event) => {
+            var palletMovementButton = document.querySelector('[data-bind="text: $root.Lang() ? $root.Dictionary[$root.Lang()].tileMenuPalletMovement : \'Pallet Movement\'"]');
+            palletMovementButton.addEventListener("click", startPalletMovement);
+ 
+            var loadShipmentButton = document.querySelector('[data-bind="text: $root.Lang() ? $root.Dictionary[$root.Lang()].tileMenuLoadShipment : \'Load shipment\'"]');
+            loadShipmentButton.addEventListener("click", startLoadShipment);
+
+            var pickReplenishmentButton = document.querySelector('[data-bind="text: $root.Lang() ? $root.Dictionary[$root.Lang()].tileMenuPickReplenishment : \'Pick replenishment\'"]');
+            pickReplenishmentButton.addEventListener("click", startPickReplenishment);
+          });
+
+          function hideAll()
+          {
+            var divs = document.querySelectorAll("body > div");
+            for (var i = 0; i < divs.length; i++) {
+              console.log(divs[i]);
+              divs[i].classList.remove("visible");
+            }
+          }
+
+          function startPalletMovement()
+          {
+            hideAll();
+
+            var palletMovement = document.querySelector("body > div.palletMovement"); 
+            palletMovement.classList.add("visible");
+
+            var showScanTruck = document.querySelector('body > div.palletMovement > div > div:nth-child(3)');
+            var scanTruck = document.querySelector("body > div.palletMovement #scanTruck");
+            var showScanPallet = document.querySelector("#showScanPallet");
+            var scanPalletId = document.querySelector("#scanPalletId");
+            var showScanLocationFrom = document.querySelector("#showScanLocationFrom");
+            var showScanLocation = document.querySelector("#showScanLocation");
+            var scanLocation = document.querySelector("#scanLocation");
+            var details = document.querySelector("#detailsPalletMovement");
+            var header = document.querySelector("body > div.palletMovement > header > div.header-title");
+
+            scanTruck.addEventListener("keypress", function(event){
+              if (event.key == "Enter") {
+                header.innerText = "Get pallet";
+                showScanPallet.classList.add("visible");
+
+                scanPalletId.focus();
+              }
+            });
+            showScanTruck.classList.add("visible");
+            scanTruck.focus();
+
+            scanPalletId.addEventListener("keypress", function(event){
+              if (event.key == "Enter") {
+                header.innerText = "Place pallet";
+                showScanLocationFrom.classList.add("visible");
+                showScanLocation.classList.add("visible");
+                details.classList.add("visible");
+
+                scanLocation.focus();
+              }
+            });
+
+            scanLocation.addEventListener("keypress", function(event){
+              if (event.key == "Enter") {
+                // clear fields and hide 
+                header.innerText = "Get pallet";
+                scanPalletId.value = "";
+                scanLocation.value = "";
+
+                showScanLocation.classList.remove("visible");
+                showScanLocationFrom.classList.remove("visible");
+                details.classList.remove("visible");
+
+                scanPalletId.focus();
+              }
+            });
+          }
+
+          function startLoadShipment() {
+            hideAll();
+
+            var loadShipment = document.querySelector("body > div.loadShipment"); 
+            var scanShipmentId = document.querySelector("#scanShipmentId");
+
+            var palletMovement = document.querySelector("body > div.palletMovement"); 
+
+            var showScanTruck = document.querySelector('body > div.palletMovement > div > div:nth-child(3)');
+            var showScanPallet = document.querySelector("#showScanPallet");
+            var scanPalletId = document.querySelector("#scanPalletId");
+            var showScanLocationFrom = document.querySelector("#showScanLocationFrom");
+            var showScanLocation = document.querySelector("#showScanLocation");
+            var scanLocation = document.querySelector("#scanLocation");
+            var header = document.querySelector("body > div.palletMovement > header > div.header-title");
+
+            var showMoveRequest = document.querySelector("#showMoveRequest");
+            var showMoveToLocation = document.querySelector("#showMoveToLocation");
+            var showPEH = document.querySelector("#showPEH");
+            var showPalletReference = document.querySelector("#showPalletReference");
+            var showPalletReferenceDivider = document.querySelector("#showPalletReferenceDivider");
+            var showLoadingShipment = document.querySelector("#showLoadingShipment");
+            scanShipmentId.addEventListener("keypress", function(event){
+              if (event.key == "Enter") {
+                scanShipmentId.value = "";
+                loadShipment.classList.remove("visible");
+                
+                palletMovement.classList.add("visible");
+                header.innerText = "Get pallet";
+                showScanTruck.classList.add("hidden");
+                showScanPallet.classList.add("visible");
+
+                scanPalletId.focus();
+              }
+            });
+
+            scanPalletId.addEventListener("keypress", function(event) {
+              if (event.key == "Enter") {
+                header.innerText = "Place pallet";
+
+                showScanLocation.classList.add("visible");
+                scanLocation.focus();
+
+                showMoveRequest.classList.add("visible");
+                showMoveToLocation.classList.add("visible");
+                showPEH.classList.add("visible");
+                showPalletReference.classList.add("visible");
+                showPalletReferenceDivider.classList.add("visible");
+                showLoadingShipment.classList.add("visible");
+              }
+            });
+
+            scanLocation.addEventListener("keypress", function(event) {
+              if (event.key == "Enter") {
+                header.innerText = "Get pallet";
+                scanPalletId.value = "";
+                scanLocation.value = "";
+
+                showScanLocation.classList.remove("visible");
+                showScanLocationFrom.classList.remove("visible");
+
+                showMoveRequest.classList.remove("visible");
+                showMoveToLocation.classList.remove("visible");
+                showPEH.classList.remove("visible");
+                showPalletReference.classList.remove("visible");
+                showPalletReferenceDivider.classList.remove("visible");
+                showLoadingShipment.classList.remove("visible");
+
+
+                scanPalletId.focus();
+              }
+            });
+
+            loadShipment.classList.add("visible");
+            scanShipmentId.focus();
+          }
+
+          function startPickReplenishment() {
+            hideAll();
+
+            var palletMovement = document.querySelector("body > div.palletMovement");
+            var showScanTruck = document.querySelector('body > div.palletMovement > div > div:nth-child(3)');
+            var scanTruck = document.querySelector("body > div.palletMovement #scanTruck");
+            var showScanPallet = document.querySelector("#showScanPallet");
+            var scanPalletId = document.querySelector("#scanPalletId");
+            var showScanLocationFrom = document.querySelector("#showScanLocationFrom");
+            var showScanLocation = document.querySelector("#showScanLocation");
+            var scanLocation = document.querySelector("#scanLocation");
+            var header = document.querySelector("body > div.palletMovement > header > div.header-title");
+            var showMoveRequest = document.querySelector("#showMoveRequest");
+
+            header.innerText = "Get pallet";
+            palletMovement.classList.add("visible");
+            showScanTruck.classList.add("visible");
+            scanTruck.focus();
+            showScanPallet.classList.add("visible");
+            showMoveRequest.classList.add("visible");
+
+            scanTruck.addEventListener("keypress", function(event){
+              if (event.key == "Enter") {
+                scanPalletId.focus();
+              }
+            });
+
+            scanPalletId.addEventListener("keypress", function(event){
+              if (event.key == "Enter") {
+                header.innerText = "Place pallet";
+                showScanLocationFrom.classList.add("visible");
+                showScanLocation.classList.add("visible");
+
+                scanLocation.focus();
+              }
+            });
+
+            scanLocation.addEventListener("keypress", function(event){
+              if (event.key == "Enter") {
+                // clear fields and hide 
+                header.innerText = "Get pallet";
+                scanPalletId.value = "";
+                scanLocation.value = "";
+
+                showScanLocation.classList.remove("visible");
+                showScanLocationFrom.classList.remove("visible");
+
+                scanPalletId.focus();
+              }
+            });
+
+          }
+
+        </script>
+    </head>
+
+    <body>
+        <div class="loader" ></div>
+
+        <!-- **** Login **** -->
+        <div class="login" >
+            <header>
+                <div class="header-title padleft">Login</div>
+                <div class="header-right no-border" >v2.67.0.1</div>
+            </header>
+
+            <div class="content">
+                <div class="row">
+                    <label class="row-label">Username</label>
+                    <input class="row-input" id="username" type="text" >
+                </div>
+                <div class="row">
+                    <label class="row-label">Password</label>
+                    <input class="row-input" type="password" id="password" >
+                </div>
+                <div class="loginButtonWrapper">
+                    <input class="loginButton" type="button" value="Login" >
+                </div>
+                <div class="message" >
+                    <span ></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- **** Picking module error handler **** -->
+        <div class="pickenErrorHandler" >
+            <header>
+                <div class="header-title noButton">Error occurred</div>
+            </header>
+
+            <div class="content" style="background-color: #f2f2f2">
+                <div class="topContent" ></div>
+
+                <div class="buttons bottom-fixed">
+                    <div class="long-buttons" >
+                        Ok
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="menu visible" data-bind="css: {visible: loggedIn() != undefined &amp;&amp; page() == &#39;menu&#39;}">
+            <header>
+                <div class="header-title padleft">Menu</div>
+                <div class="header-right no-border" data-bind="text: $root.warehouseId() + &#39; - &#39; + $root.loggedIn()">GTC - Jelmerm</div>
+            </header>
+
+            <div class="content content-grey">
+                <div class="menuTilesWrapper">
+                    <div class="menuTile tile2_palletM" data-bind="click: goToPage.bind($data, &#39;palletMeasurement&#39;)">
+                        <div class="menuTileTitle" data-bind="text: $root.Lang() ? $root.Dictionary[$root.Lang()].tileMenuPalletMeasurement : &#39;Pallet Measurement&#39;">Pallet measurement</div>
+                    </div>
+                    <div class="clear"></div>
+                    <div class="menuTile tile1" data-bind="click: openPalletMovement.bind($data, &#39;palletMovement&#39;)">
+                        <div class="menuTileTitle" data-bind="text: $root.Lang() ? $root.Dictionary[$root.Lang()].tileMenuPalletMovement : &#39;Pallet Movement&#39;">Pallet movement</div>
+                    </div>
+                    <div class="menuTile tile2" data-bind="click: openCycleCount">
+                        <div class="menuTileTitle" data-bind="text: $root.Lang() ? $root.Dictionary[$root.Lang()].tileMenuCycleCount : &#39;Count stock&#39;">Count stock</div>
+                    </div>
+                    <div class="menuTile tile3" data-bind="click: getMovementFilters.bind($data)">
+                        <div class="menuTileTitle" data-bind="text: $root.Lang() ? $root.Dictionary[$root.Lang()].tileMenuPickReplenishment : &#39;Pick replenishment&#39;">Pick replenishment</div>
+                    </div>
+                    <div class="menuTile tile3" data-bind="click: openReplenishmentActions.bind($data, &#39;replenishmentActions&#39;)">
+                        <div class="menuTileTitle" data-bind="text: $root.Lang() ? $root.Dictionary[$root.Lang()].replenishmentActions : &#39;Replenishment actions&#39;">Replenishment actions</div>
+                    </div>
+
+                    <div class="menuTile tile4" data-bind="click: openOutboundLSU">
+                        <div class="menuTileTitle" data-bind="text: $root.Lang() ? $root.Dictionary[$root.Lang()].tileMenuControlevak : &#39;Check location&#39;">Check location</div>
+                    </div>
+                    <div class="menuTile tile8" data-bind="click: openPickenChooseType">
+                        <div class="menuTileTitle" data-bind="text: $root.Lang() ? $root.Dictionary[$root.Lang()].tileMenuPicking : &#39;Picking&#39;">Picking</div>
+                    </div>
+                    <div class="menuTile tile1 loadShipmentTile" data-bind="click: goToPage.bind($data, &#39;loadShipment&#39;)">
+                        <div class="menuTileTitle" data-bind="text: $root.Lang() ? $root.Dictionary[$root.Lang()].tileMenuLoadShipment : &#39;Load shipment&#39;">Load shipment</div>
+                    </div>
+                    <div class="menuTile tile7" data-bind="click: goToPage.bind($data, &#39;inboundScanning&#39;)">
+                        <div class="menuTileTitle" data-bind="text: $root.Lang() ? $root.Dictionary[$root.Lang()].tileInboundScanning : &#39;Inbound scanning&#39;">Inbound scanning</div>
+                    </div>
+                    <div class="menuTile tile9" data-bind="click: goToPage.bind($data, &#39;mergePallets&#39;)">
+                        <div class="menuTileTitle" data-bind="text: $root.Lang() ? $root.Dictionary[$root.Lang()].tileMergePallets : &#39;Merge pallets&#39;">Merge pallets</div>
+                    </div>
+                    <div class="menuTile tile10" data-bind="click: goToPage.bind($data, &#39;repalletizeAutostore&#39;)">
+                        <div class="menuTileTitle" data-bind="text: $root.Lang() ? $root.Dictionary[$root.Lang()].tileMenuRepalletizeAutostore : &#39;Repalletize Autostore&#39;">Repalletize Autostore</div>
+                    </div>
+                    <div class="menuTile tile7" data-bind="click: goToPage.bind($data, &#39;palletEnLocatie&#39;)">
+                        <div class="menuTileTitle" data-bind="text: $root.Lang() ? $root.Dictionary[$root.Lang()].tilePalletEnLocatie : &#39;Pallet en locatie info&#39;">Pallet en locatie info</div>
+                    </div>
+                    <div class="menuTile tile7" data-bind="click: goToPage.bind($data, &#39;changeWarehouse&#39;)">
+                        <div class="menuTileTitle" data-bind="text: $root.Lang() ? $root.Dictionary[$root.Lang()].tileMenuWarehouse : &#39;Change warehouse&#39;">Change warehouse</div>
+                    </div>
+                    <div class="menuTile tile6 visible" data-bind="css: { &#39;visible&#39;: canChangeEnvironment() == true }, click: changeEnvironment">
+                        <div class="menuTileTitle" data-bind="text: $root.Lang() ? $root.Dictionary[$root.Lang()].tileMenuChange : &#39;Change environment&#39;">Change environment</div>
+                    </div>
+
+                    <div class="menuTile tile5" data-bind="click: logoff">
+                        <div class="menuTileTitle menuTileTitleLogoff" data-bind="text: $root.Lang() ? $root.Dictionary[$root.Lang()].tileMenuLogoff : &#39;Log off&#39;">Log off</div>
+                    </div>
+                </div>
+                <div class="message message-top" data-bind="css: {&#39;visible&#39;: errorMessage() != null, &#39;messageSuccessful&#39;: successMessage() == true}">
+                    <span data-bind="text: errorMessage, click: hideErrorMessage"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ***** choose picking type*** -->
+        <div class="menu" >
+            <header>
+                <button class="icon-back" ></button>
+
+                <div class="header-right no-border" >GTC - Jelmerm</div>
+            </header>
+
+            <div class="content content-grey">
+                <div class="menuTilesWrapper">
+                    <div class="menuTile tile3_no_img" >
+                        <div class="pickingNumber" >0</div>
+                        <div class="menuTileTitle menuTileTitle_smallpadding">
+                            All - Regular
+                        </div>
+                    </div>
+                    <div class="menuTile tile8_no_img" >
+                        <div class="pickingNumber" >0</div>
+                        <div class="menuTileTitle menuTileTitle_smallpadding">
+                            All - Pick to cart
+                        </div>
+                    </div>
+                    <div class="menuTile tile2_no_img" >
+                        <div class="pickingNumber" >0</div>
+                        <div class="menuTileTitle menuTileTitle_smallpadding">
+                            Full pallet
+                        </div>
+                    </div>
+                </div>
+                <div class="menuTilesWrapper">
+                    <div class="menuTile tile2_no_img" >
+                        <div class="pickingNumber" >0</div>
+                        <div class="menuTileTitle menuTileTitle_smallpadding">
+                            Pieces 1 line
+                        </div>
+                    </div>
+                    <div class="menuTile tile4_no_img" >
+                        <div class="pickingNumber" >0</div>
+                        <div class="menuTileTitle menuTileTitle_smallpadding">
+                            Pieces &gt;1 line
+                        </div>
+                    </div>
+                </div>
+                <div class="menuTilesWrapper">
+                    <div class="menuTile tile8_no_img" >
+                        <div class="pickingNumber" >0</div>
+                        <div class="menuTileTitle menuTileTitle_smallpadding">
+                            Mixed
+                        </div>
+                    </div>
+                </div>
+                <div class="menuTilesWrapper">
+                    <div class="menuTile tile3_no_img" >
+                        <div class="pickingNumber" >0</div>
+                        <div class="menuTileTitle menuTileTitle_smallpadding">
+                            All - Internal
+                        </div>
+                    </div>
+                </div>
+                <div class="message message-top" >
+                    <span ></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ***** splitPallet Location *** -->
+
+        <div class="splitPallet" >
+            <header>
+                <button class="icon-back" ></button>
+                <div class="header-title">Place partial pallet</div>
+                <div class="header-right" >GTC - Jelmerm</div>
+            </header>
+
+            <div class="content">
+                <div class="row-pallet-move" >
+                    <label class="row-label row-label-new">Truck</label>
+                    <input class="row-input row-input-new max-width" id="scanTruck" placeholder="Scan Truck"  autofocus="">
+                </div>
+                <div class="row-pallet-move">
+                    <label class="row-label row-label-new" >Location from</label>
+                    <input class="row-input row-input-new max-width" id="scanLocationFrom">
+                </div>
+
+                <!-- Scan location -->
+                <div class="row-pallet-move">
+                    <label class="row-label" >Location to</label>
+                    <input class="row-input max-width" id="scanLocationSplit" placeholder="Scan" >
+                </div>
+
+                <div class="row-details-pallet-movement hidden">
+                  <p> </p>  
+                </div>
+
+                <div class="row-details-pallet-movement" style="
+                        background: none;
+                        border-bottom: 0px;
+                        padding-top: 10px;
+                        font-weight: 300;
+                        color: #d76848;
+                        text-align: center;
+                    " >Attn! Place at location  out of 0 . Make sure that the rest of 0  will remain on your carrier together with the pallet sticker.</div>
+
+                <div class="buttons bottom-fixed">
+                    <div class="long-buttons white-button" >
+                        Toon productlocaties
+                    </div>
+                </div>
+
+                <div class="message" >
+                    <span ></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ***** splitPallet *** -->
+        <div class="splitPallet" >
+            <header>
+                <button class="icon-back" ></button>
+                <div class="header-title">Split pallet</div>
+                <div class="header-right" >GTC - Jelmerm</div>
+            </header>
+            <div class="content">
+                <div class="row-pallet-move" >
+                    <label class="row-label row-label-new">Truck</label>
+                    <input class="row-input row-input-new max-width" id="scanTruck" placeholder="Scan Truck"  autofocus="">
+                </div>
+
+                <div class="row-pallet-move">
+                    <label class="row-label" >Pallet total quantity ()</label>
+                    <input class="row-input row-input-new"  >
+                </div>
+
+                <div class="row-pallet-move">
+                    <label class="row-label">Quantity to move on location</label>
+                    <input class="row-input row-input-new" id="splitPalletInput" placeholder="Enter quantity"  type="number">
+                </div>
+
+                <div class="row-details-pallet-movement hidden" >
+                    <p ></p>
+                </div>
+
+                <div class="message" >
+                    <span ></span>
+                </div>
+
+                <div class="buttons bottom-fixed">
+                    <div class="long-buttons" >
+                        Confirm quantity
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ***** palletMovement NEW screen layout*** -->
+        <div class="palletMovement" >
+            <header>
+                <button class="icon-back" ></button>
+                <div class="header-title" >Place pallet</div>
+                <div class="header-right" >GTC - Scan_MervinC</div>
+            </header>
+
+            <div class="content">
+                <!-- Truck -->
+
+                <div class="filter_title hidden" style="padding-bottom: 10px; font-size: 14px" >
+                    Section
+                    <span ></span>
+                </div>
+                <div class="filter_expedition hidden" ></div>
+
+                <div class="row-pallet-move hidden" >
+                    <label class="row-label row-label-new">Truck</label>
+                    <input class="row-input row-input-new max-width" id="scanTruck" placeholder="Scan Truck"  autofocus="" >
+                </div>
+
+                <!-- Scan pallet -->
+                <div class="row-pallet-move hidden" id="showScanPallet">
+                    <label class="row-label row-label-new">Pallet</label>
+                    <input class="row-input row-input-new max-width"
+                    id="scanPalletId" placeholder="Scan">
+                </div>
+
+                <div class="row-pallet-move hidden" id="showScanLocationFrom">
+                    <label class="row-label row-label-new" >Location from</label>
+                    <input class="row-input row-input-new max-width" id="scanLocationFrom"  >
+                </div>
+
+                <!-- Scan location -->
+                <div class="row-pallet-move hidden" id="showScanLocation">
+                    <label class="row-label" >Location to</label>
+                    <input class="row-input max-width" id="scanLocation" placeholder="Scan" >
+                </div>
+
+                <!-- Divider -->
+                <div class="row-divider withText hidden" id="showMoveRequest">Move request</div>
+
+                <!-- Gew. Loc / Prefered Location -->
+                <div class="row-pallet-move hidden" >
+                    <label class="row-label" >Pref.Loc.</label>
+                    <input class="row-input max-width" id="preferredLocation"  readonly="">
+                </div>
+                <div class="row-pallet-move hidden" >
+                    <label class="row-label" >Pref.Loc.</label>
+                    <input class="row-input max-width" id="preferredLocation2"  readonly="">
+                </div>
+
+                <!-- Product description max 5 lines & max 2 lines -->
+                <div class="row-details-pallet-movement hidden small" id="detailsPalletMovement">
+                  <p>Still Spring Water Cristaline 
+                  <br>FRANKRIJK 
+                  <br>tray @ 6 bottles x 1,5 litre</p>
+                </div>
+
+                <!-- ko if: loadShipmentData() -->
+                <!-- Current location info for LoadShipment & PickReplenishment -->
+                <div class="row-pallet-move hidden" >
+                    <label class="row-label" >Go to location</label>
+                    <input class="row-input right" readonly="" >
+                </div>
+
+                <!-- End location info for LoadShipment & PickReplenishment -->
+                <div class="row-pallet-move hidden" id="showMoveToLocation" >
+                    <label class="row-label" >Move to location</label>
+                    <input class="row-input right" readonly="" >
+                </div>
+
+                <!-- Pallet ID info for LoadShipment & PickReplenishment -->
+                <div class="row-pallet-move hidden" >
+                    <label class="row-label">Pallet</label>
+                    <input class="row-input right" readonly="" >
+                </div>
+
+                <!-- Product info for Pick replenishment -->
+                <div class="row-details-pallet-movement small hidden" >
+                    <p ></p>
+                </div>
+
+                <!-- Quantity PEH (descr) an Colli -->
+                <div class="row-pallet-move hidden" id="showPEH">
+                    <input class="row-input full left" readonly="" >
+                </div>
+
+                <!-- Pallet reference / Extra ref for LoadShipment -->
+                <div class="row-pallet-move hidden" id="showPalletReference">
+                    <label class="row-label" >Pallet reference</label>
+                    <input class="row-input right" readonly="" >
+                </div>
+
+                <!-- Divider -->
+                <div class="row-divider hidden" id="showPalletReferenceDivider"></div>
+
+                <!-- Movement reason: Load shipment + ID or Replenishment -->
+                <div class="row-pallet-move hidden" id="showLoadingShipment">
+                    <label class="row-label" >Loading shipment</label>
+                    <input class="row-input right" readonly="" >
+                </div>
+
+                <!-- /ko -->
+                <div class="row-pallet-move hidden" >
+                    <label class="row-label">Opioid Class</label>
+                    <input class="row-input right" readonly="" >
+                </div>
+                <!-- Load shipment progress info-->
+                <!-- ko if: loadShipmentData() && loadShipmentData().MovementReason === '2' && loadShipmentData().MoveRequestGroup -->
+                <div class="row-pallet-move hidden" style="height: 35px" id="showProgressInfo">
+                    <div class="row-33" style="font-size: 11px" >Freeze</div>
+                    <div class="row-33" style="font-size: 11px" >Cool</div>
+                    <div class="row-33 no-border" style="font-size: 11px" >Dry</div>
+                    <div class="row-33" >0 / 0</div>
+                    <div class="row-33" >0 / 0</div>
+                    <div class="row-33 no-border" >1 / 33</div>
+                </div>
+                <!-- /ko -->
+                <div class="buttons bottom-fixed hidden" data-bind="css: {visible: loadShipmentData() &amp;&amp;
+         loadShipmentData().MovementReason == &#39;4&#39; &amp;&amp;
+         loadShipmentData.PalletMovementRequest !== &#39;0&#39; &amp;&amp;
+         (palletMovementHeader() === &#39;Get pallet&#39; || palletMovementHeader() === &#39;Haal pallet&#39;)}
+    ">
+                    <div class="long-buttons red" >Cancel move request</div>
+                </div>
+
+                <div class="buttons bottom-fixed hidden" >
+                    <div class="long-buttons" >
+                        Cancel
+                    </div>
+                </div>
+
+                <div class="buttons bottom-fixed hidden" data-bind="
+               ">
+                    <div class="long-buttons hidden" >
+                        Split pallet
+                    </div>
+
+                    <div class="long-buttons white-button hidden" data-bind="click: $root.showStock, css: {visible: $root.dataMoveToTruck() &amp;&amp;
+                            $root.dataMoveToTruck().PalletMovementRequest == &#39;0&#39; &amp;&amp;
+                            $root.dataMoveToTruck().ProductId !=&#39;&#39; &amp;&amp; $root.dataMoveToTruck().ProductId.toLowerCase() !=&#39;leeg&#39; &amp;&amp; $root.dataMoveToTruck().ProductId.toLowerCase() !=&#39;diverse&#39;}">
+                        Toon productlocaties
+                    </div>
+                </div>
+
+                <div class="message" >
+                    <span ></span>
+                </div>
+                <div class="message" >
+                    <span ></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="warningCancelMoverequest" >
+            <header>
+                <div class="header-right" >GTC - Jelmerm</div>
+            </header>
+            <div class="content">
+                <div class="middleContent">
+                    <div class="confirmMessage" >You entered the full pallet quantity, are you sure you want to move the full pallet?</div>
+                    <div class="buttons">
+                        <div class="small-buttons" >
+                            No
+                        </div>
+                        <div class="small-buttons" >
+                            Yes
+                        </div>
+                    </div>
+                    <div class="message" >
+                        <span ></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="warningCancelMoverequest" >
+            <header>
+                <div class="header-right" >GTC - Jelmerm</div>
+            </header>
+            <div class="content">
+                <div class="middleContent">
+                    <div class="confirmMessage" >Are you sure you want to cancel the move request?</div>
+                    <div class="buttons">
+                        <div class="small-buttons" >
+                            No
+                        </div>
+                        <div class="small-buttons" >
+                            Yes
+                        </div>
+                    </div>
+                    <div class="message" >
+                        <span ></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ***** cycleCount Product Validation *** -->
+        <div class="cycleCountLocation" >
+            <header>
+                <button class="icon-back" ></button>
+                <div class="header-title" >Confirm product</div>
+                <div class="header-right" >GTC - Jelmerm</div>
+            </header>
+            <div class="content" ></div>
+        </div>
+
+        <!-- ***** cycleCount Location *** -->
+        <div class="cycleCountLocation" >
+            <header>
+                <button class="icon-back" ></button>
+                <div class="header-title" >Count stock</div>
+                <div class="header-right" >GTC - Jelmerm</div>
+            </header>
+
+            <div class="content">
+                <div class="row hidden visible" >
+                    <label class="row-label" >Location</label>
+                    <input class="row-input right" id="ccScanLocation" placeholder="Scan"  autofocus="">
+                </div>
+
+                <div class="row hidden" >
+                    <label class="row-label" >Location</label>
+                    <input class="row-input right row-input-smaller" id="locationBarcode" placeholder="Location"  readonly="">
+                </div>
+                <div class="row hidden" >
+                    <label class="row-label row-label-auto" >Physical Location</label>
+                    <input class="row-input right row-input-smaller" id="physicalLocationCode" placeholder="Physical Location"  readonly="">
+                </div>
+
+                <div class="row hidden" >
+                    <label class="row-label" >Location</label>
+                    <input class="row-input right"  readonly="">
+                </div>
+                <div class="row hidden" >
+                    <label class="row-label" >Section</label>
+                    <input class="row-input right"  readonly="">
+                </div>
+                <div class="row hidden" >
+                    <label class="row-label" >Lines</label>
+                    <input class="row-input right"  readonly="">
+                </div>
+                <div class="row hidden" >
+                    <label class="row-label" >Counted</label>
+                    <input class="row-input right"  readonly="">
+                </div>
+                <div class="row hidden" >
+                    <label class="row-label" >Difference</label>
+                    <input class="row-input right"  readonly="">
+                </div>
+
+                <div  class="picklist-line line-warehouse hidden" style="
+                        font-size: 11px !important;
+                        padding-left: 5px;
+                        background: #ddd;
+                    ">
+                    Location with active count requests
+                </div>
+
+                <div style="font-size: 14px !important" ></div>
+
+                <div class="buttons hidden" >
+                    <div class="small-buttons" >New</div>
+                    <div class="small-buttons" >Confirm</div>
+                </div>
+                <div class="buttons hidden" >
+                    <div class="small-buttons" >Confirm</div>
+                    <div class="small-buttons" >Location not empty</div>
+                </div>
+                <div class="message" >
+                    <span ></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ***** cycleCount Lines *** -->
+        <div class="cycleCountLine" >
+            <header>
+                <button class="icon-back" ></button>
+                <div class="header-title">
+                    <span >Count line</span>
+                    <span >NaN</span>
+                    <span> / </span>
+                    <span ></span>
+                </div>
+                <div class="header-right" >GTC - Jelmerm</div>
+            </header>
+
+            <div class="content" ></div>
+        </div>
+
+        <div class="warningUnfinishedProcess" >
+            <header>
+                <div class="header-right" >GTC - Jelmerm</div>
+            </header>
+            <div class="content">
+                <div class="middleContent">
+                    <div class="confirmMessage" >Are you sure you want to close the counting session?</div>
+                    <div class="buttons">
+                        <div class="small-buttons" >
+                            No
+                        </div>
+                        <div class="small-buttons" >
+                            Yes
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="warningUnfinishedProcess" >
+            <header>
+                <div class="header-right" >GTC - Jelmerm</div>
+            </header>
+            <div class="content">
+                <div class="middleContent">
+                    <div class="confirmMessage" >Are you sure you want to close the inbound scanning session?</div>
+                    <div class="buttons">
+                        <div class="small-buttons" >No</div>
+                        <div class="small-buttons" >Yes</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="warningUnfinishedProcess" >
+            <header>
+                <div class="header-right" >GTC - Jelmerm</div>
+            </header>
+            <div class="content">
+                <div class="middleContent">
+                    <div class="confirmMessage" >Confirm canceling?</div>
+                    <div class="buttons">
+                        <div class="small-buttons" >No</div>
+                        <div class="small-buttons" >Yes</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="warningUnfinishedProcess" >
+            <header>
+                <div class="header-right" >GTC - Jelmerm</div>
+            </header>
+            <div class="content">
+                <div class="middleContent">
+                    <div class="confirmMessage" >Are you sure you want to cancel this line?</div>
+                    <div class="buttons">
+                        <div class="small-buttons" >No</div>
+                        <div class="small-buttons button-red" >Yes</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ***** List of Products *** -->
+        <div class="pickenPicklists" >
+            <header>
+                <button class="icon-back" ></button>
+                <div class="header-title" style="max-width: 105px" >Choose product</div>
+                <div class="header-right" style="margin-right: 0; max-width: 80px" >GTC - Jelmerm</div>
+            </header>
+            <div class="content" style="background-color: #f2f2f2">
+                <div class="picklists">
+                    <div class="picklist" ></div>
+                    <div class="picklist">
+                        <div class="picklistDate" >
+                            UNKNOWN
+                        </div>
+                        <div class="picklistData">
+                            <div class="picklist-line" style="height: auto; padding-bottom: 3px">
+                                <label class="pl-row-label" >Description</label>
+                                <span class="pl-item float-right pl-item-choose-product">-</span>
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ***** List of Picklists *** -->
+        <div class="pickenPicklists" >
+            <header>
+                <button class="icon-back" ></button>
+                <div class="header-title" style="max-width: 87px" >Choose picklist</div>
+                <button class="icon-refresh" ></button>
+                <div class="header-right" style="margin-right: 0; max-width: 80px" >GTC - Jelmerm</div>
+            </header>
+
+            <div class="content" style="background-color: #f2f2f2">
+                <div class="sort_and_filter">
+                    <div class="filter_show">
+                        <span class="no_filters" >No filters selected</span>
+                        <span class="filter_selected hidden" ></span>
+                        <span class="filter_selected hidden" ></span>
+                        <span class="filter_selected hidden" ></span>
+                    </div>
+                    <div class="sort_button">Sort</div>
+                </div>
+                <div class="clear"></div>
+                <div class="filters_shown">
+                    <div class="filter_title">Expedition</div>
+                    <div class="filter_expedition" ></div>
+                    <div class="filter_title">Section</div>
+                    <div class="filter_expedition" ></div>
+                    <div class="filter_title">Cart</div>
+                    <div class="filter_expedition" >
+                        <div class="sort_radio">
+                            <div class="radio_button radio_button_3" >
+                                <input  type="radio" name="sort_checkbox_cart" value="With cart" id="With cart">
+
+                                <label  for="With cart">With cart</label>
+                            </div>
+                        </div>
+                    
+                        <div class="sort_radio">
+                            <div class="radio_button radio_button_3" >
+                                <input  type="radio" name="sort_checkbox_cart" value="Without cart" id="Without cart">
+
+                                <label  for="Without cart">Without cart</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sort_shown">
+                    <div class="sort_ascending sort_selected" >
+                        Ascending
+                    </div>
+                    <div class="sort_descending" >
+                        Descending
+                    </div>
+                    <div class="clear"></div>
+                    <div class="sort_radio">
+                        <div class="radio_button radio_button_1 radio_button_selected" >
+                            <input type="radio" id="deadline" name="sort_radio" value="deadline" >
+
+                            <label for="deadline">Deadline</label>
+                        </div>
+                        <div class="radio_button radio_button_1" >
+                            <input type="radio" id="expeditioncode" name="sort_radio" value="expeditioncode" >
+
+                            <label for="expeditioncode">Expedition code</label>
+                        </div>
+                        <div class="radio_button radio_button_1" >
+                            <input type="radio" id="sectioncode" name="sort_radio" value="sectioncode" >
+
+                            <label for="sectioncode">Section code</label>
+                        </div>
+                        <div class="radio_button radio_button_1" >
+                            <input type="radio" id="streetcode" name="sort_radio" value="streetcode" >
+                            <label for="streetcode">Street code</label>
+                        </div>
+                        <div class="radio_button radio_button_1" >
+                            <input type="radio" id="cartidentification" name="sort_radio" value="cartidentification" >
+                            <label for="cartidentification">Cart Identification</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="picklists">
+                    <div class="picklist" ></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ***** Picklist details *** -->
+        <div class="pickenPicklistDetails" >
+            <header>
+                <button class="icon-back" ></button>
+                <div class="header-title" >Confirm choice</div>
+                <div class="header-right" >GTC - Jelmerm</div>
+            </header>
+
+            <div class="content" style="background-color: #f2f2f2" ></div>
+        </div>
+
+        <!-- ***** Picklist scan barcode *** -->
+        <div class="pickenPickingProcess" >
+            <header ></header>
+
+            <div class="content" style="background-color: #f2f2f2">
+                <div class="picklist-line big-line" ></div>
+                <!-- ko if: selectedPicklistLine() && selectedPicklistLine().FullyPicked === 'false' --><!-- /ko -->
+                <!-- ko if: selectedPicklistLine() && selectedPicklistLine().FullyPicked === 'true' --><!-- /ko -->
+            </div>
+        </div>
+
+        <!-- ***** Picklist confirm manual picking *** -->
+        <div class="pickenManualPickingStart" ></div>
+
+        <!-- ***** Picklist confirm manual picking *** -->
+        <div class="pickenClosePallet" >
+            <header>
+                <div class="header-title noButton" >Picklist completed</div>
+                <div class="header-right" >GTC - Jelmerm</div>
+            </header>
+
+            <div class="content" style="background-color: #f2f2f2">
+                <div class="topContent" >There are no more lines to pick</div>
+                <div class="buttons bottom-fixed">
+                    <div class="long-buttons" >Confirm process pallet</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ***** Picklist confirm picking process *** -->
+        <div class="pickenProcessPicklist" >
+            <header>
+                <button class="icon-back" ></button>
+                <div class="header-title" >Picklist completed</div>
+                <div class="header-right" >GTC - Jelmerm</div>
+            </header>
+
+            <div class="content" style="background-color: #f2f2f2">
+                <div class="topContent" >There are no more lines to pick, all pallets are finished. Press OK to process picklist</div>
+                <div class="buttons bottom-fixed">
+                    <div class="long-buttons border-bottom-white" >Next picklist</div>
+                    <div class="long-buttons" >
+                        Ok
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ***** GIFTS Categories *** -->
+          <div class="giftCategoryList giftSampleHeight" > 
+            <header>
+              <div class="header-title" >Gift category</div>
+              <div class="header-right" >GTC - Jelmerm</div>
+          </header>
+
+            <div class="content" style="background-color: #f2f2f2">
+                <div class="picklist margin-bottom-30" ></div>
+            </div>
+           
+
+            <div class="buttons gift-sample-button hidden" >
+                <div class="long-buttons" >
+                    Confirm
+                </div>
+            </div>
+        </div>
+
+        <!-- ***** GIFTS SAMPLES *** -->
+        <div class="samples giftSampleHeight" > 
+           <header>
+             <div class="header-title" >Samples</div>
+             <div class="header-right" >GTC - Jelmerm</div>
+         </header>
+
+           <div class="content" style="background-color: #f2f2f2">
+               <div class="picklist margin-bottom-30" ></div>
+           </div>
+          
+
+           <div class="buttons gift-sample-button hidden" >
+               <div class="long-buttons" >
+                   Confirm
+               </div>
+           </div>
+        </div>
+
+        <!-- ***** GIFTS CARDS *** -->
+        <div class="giftCardPicklist giftSampleHeight" > 
+            <header>
+                <div class="header-title" >Gift card picklist</div>
+                <div class="header-right" >GTC - Jelmerm</div>
+            </header>
+
+            <div class="content" style="background-color: #f2f2f2">
+                <div class="picklist margin-bottom-30" ></div>
+            </div>
+         
+
+            <div class="buttons gift-sample-button hidden" >
+                <div class="long-buttons" >
+                    Confirm
+                </div>
+            </div>
+        </div>
+
+        <div class="pickenScanBarcode" >
+            <header>
+                <button class="icon-back" ></button>
+                <div class="header-title" >Product</div>
+                <div class="header-right" >GTC - Jelmerm</div>
+            </header>
+            <div class="content">
+                <!--<div class="row">
+              <label class="row-label" >Product</label>
+              <input class="row-input right" id="pickingBarcode_OLD" placeholder="Scan"  autofocus="">
+            </div>-->
+                <div class="message" >
+                    <span ></span>
+                </div>
+
+                <div class="buttons bottom-fixed">
+                    <div class="long-buttons" >Confirm manually</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ***** Picklist add amount *** -->
+        <div class="pickenAddAmount" ></div>
+
+        <!-- ***** New pallet / Pallet gegevens *** -->
+        <div class="newPallet" >
+            <header>
+                <button class="icon-back" ></button>
+                <div class="header-title" >Pallet information</div>
+                <div class="header-right" >GTC - Jelmerm</div>
+            </header>
+
+            <div class="content" style="color: #297fb8">
+                <div class="palletsDropdown" >
+                    <ul ></ul>
+                </div>
+                <div class="picklist-line big-line">
+                    <label class="pl-row-label" >Carrier type</label>
+                    <div style="display: inline" >
+                        <span class="icon-down" ></span>
+                        <span class="pl-item float-right" >selecteer type</span>
+                    </div>
+                </div>
+                <div class="picklist-line big-line">
+                    <label class="pl-row-label" >Weight</label>
+                    <input class="row-input right" style="color: #297fb8; font-size: 11px" >
+                    <span class="floating-unit-measure" >Kg</span>
+                </div>
+                <div class="picklist-line big-line">
+                    <label class="pl-row-label" >Height</label>
+                    <input class="row-input right" style="color: #297fb8; font-size: 11px" >
+                    <span class="floating-unit-measure" >cm</span>
+                </div>
+                <div class="buttons bottom-fixed">
+                    <!--<div class="long-buttons" >Bevestig</div>-->
+                    <div class="long-buttons" >Confirm</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ***** Outbound LSU Check *** -->
+        <div class="outboundLSU" >
+            <header>
+                <button class="icon-back" ></button>
+                <div class="header-title" >Check location</div>
+                <div class="header-right" >GTC - Jelmerm</div>
+            </header>
+
+            <div class="content">
+                <div class="row">
+                    <label class="row-label">Pallet</label>
+                    <input class="row-input right" id="scanOutboundPalletId" placeholder="Scan" >
+                </div>
+                <div class="row hidden" >
+                    <label class="row-label" >Check ID</label>
+                    <input class="row-input"  readonly="">
+                </div>
+                <div class="hidden" >
+                    <label class="row-label-long" >Check remark</label><br>
+                    <textarea id="outboundRemarks" ></textarea>
+                </div>
+                <div class="buttons hidden" >
+                    <div class="long-buttons hidden visible" id="confirmOutboundLSU" >Check LSU Outbound</div>
+                </div>
+                <div class="message" >
+                    <span ></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ***** Load shipment *** -->
+        <div class="loadShipment" >
+            <header>
+                <button class="icon-back" ></button>
+                <div class="header-title" >Scan shipment</div>
+                <div class="header-right" >GTC - Jelmerm</div>
+            </header>
+
+            <div class="content">
+                <div class="row">
+                    <label class="row-label" >Shipment</label>
+                    <input class="row-input right" id="scanShipmentId" placeholder="Scan"  autofocus="">
+                </div>
+                <div class="message" >
+                    <span ></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ***** Change warehouse *** -->
+        <div class="changeWarehouse" >
+            <header>
+                <button class="icon-back" ></button>
+                <div class="header-title" >Change warehouse</div>
+                <div class="header-right" >GTC - Jelmerm</div>
+            </header>
+
+            <div class="content">
+                <div style="font-size: 14px !important" ></div>
+                <div class="message" >
+                    <span ></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ***** Pallet en locatie info *** -->
+        <div class="palletEnLocatie" >
+            <header>
+                <button class="icon-back" ></button>
+                <div class="header-title" >Pallet en locatie</div>
+                <div class="header-right" >GTC - Jelmerm</div>
+            </header>
+
+            <div class="content">
+                <div class="row" >
+                    <label class="row-label row-label-new" >Pallet/Location</label>
+                    <input class="row-input right row-input-new" id="palletEnLocatieId" placeholder="Scan"  autofocus="">
+                </div>
+
+                <div class="scanned-pallets-info" ></div>
+                <div class="message" >
+                    <span ></span>
+                </div>
+                <div class="buttons bottom-fixed inbound-start" >
+                    <div class="small-buttons" style="line-height: 25px" >
+                        &lt;&lt;&lt;
+                    </div>
+                    <div class="small-buttons" style="line-height: 25px" >
+                        &gt;&gt;&gt;
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ***** Merge pallets *** -->
+        <div class="mergePallets" >
+            <header>
+                <button class="icon-back" ></button>
+                <div class="header-title" >Merge pallets</div>
+                <div class="header-right" >Jelmerm</div>
+            </header>
+
+            <div class="content">
+                <div class="row">
+                    <label class="row-label" >Pallet</label>
+                    <input class="row-input right" id="mergePalletId" placeholder="Scan"  autofocus="">
+                </div>
+                <div class="scanned-merge" >
+                    <div class="picklist-line">
+                        <label class="pl-row-label">Transport</label>
+                        <span class="pl-item float-right" ></span>
+                    </div>
+                    <div class="picklist-line">
+                        <label class="pl-row-label" >Customer</label>
+                        <span class="pl-item float-right" ></span>
+                    </div>
+                </div>
+                <div class="scanned-pallets-list" ></div>
+
+                <div class="message" >
+                    <span ></span>
+                </div>
+                <div class="buttons bottom-fixed inbound-start" >
+                    <div class="long-buttons" >Start session</div>
+                </div>
+
+                <div class="buttons bottom-fixed inbound-start" >
+                    <div class="long-buttons half-btn half-btn-new merge-btn-red" >Cancel line</div>
+                    <div class="long-buttons half-btn half-btn-new btn-right merge-btn inbound-start" >Merge pallets</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mergePalletsType" >
+            <header>
+                <button class="icon-back" ></button>
+                <div class="header-title" >Merge pallets</div>
+                <div class="header-right" >Jelmerm</div>
+            </header>
+            <div class="content">
+                <div class="row">
+                    <label class="row-label row-label-new" >Target location</label>
+                    <input class="row-input row-input-new right" id="mergeTargetLocation" placeholder="Target Location"  autofocus="">
+                </div>
+                <div class="row">
+                    <label class="row-label row-label-new" >Pallet type</label>
+                    <select id="selectPalletTypes" class="row-input row-input-new right select-with-icon" data-bind="event: {click: $root.updatePalletHeight}, options: palletTypeDescriptions,
+                       optionsText: &#39;name&#39;, optionsValue: &#39;id&#39;, value: $root.selectedPalletTypeMerge"></select>
+                </div>
+                <div class="row">
+                    <label class="row-label row-label-new-2" >Pallet height (cm)</label>
+                    <input class="row-input row-input-new-2 right" id="mergePalletHeight" placeholder="Pallet height"  autofocus="">
+                </div>
+
+                <div class="message" >
+                    <span ></span>
+                </div>
+                <div class="buttons bottom-fixed">
+                    <div class="long-buttons" >Create pallet</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mergePalletsSuccess" >
+            <header>
+                <button class="icon-back" ></button>
+                <div class="header-title" >Merge pallets</div>
+                <div class="header-right" >Jelmerm</div>
+            </header>
+
+            <div class="content">
+                <div class="row">
+                    <div class="picklist-line">
+                        <label class="pl-row-label">Transport</label>
+                        <span class="pl-item float-right" ></span>
+                    </div>
+                    <div class="picklist-line">
+                        <label class="pl-row-label" >Customer</label>
+                        <span class="pl-item float-right" ></span>
+                    </div>
+                    <div class="picklist-line">
+                        <label class="pl-row-label">New pallet</label>
+                        <span class="pl-item float-right" ></span>
+                    </div>
+                </div>
+
+                <div class="message" >
+                    <span ></span>
+                </div>
+
+                <div class="buttons bottom-fixed">
+                    <div class="long-buttons" >New session</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mergePalletsFail" >
+            <header>
+                <button class="icon-back" ></button>
+                <div class="header-title" >Merge pallets</div>
+                <div class="header-right" >Jelmerm</div>
+            </header>
+
+            <div class="content">
+                <div class="row">
+                    <div class="picklist-line">
+                        <label class="pl-row-label">Transport</label>
+                        <span class="pl-item float-right" ></span>
+                    </div>
+                    <div class="picklist-line">
+                        <label class="pl-row-label" >Customer</label>
+                        <span class="pl-item float-right" ></span>
+                    </div>
+                </div>
+
+                <div class="message" >
+                    <span ></span>
+                </div>
+
+                <div class="buttons bottom-fixed">
+                    <div class="small-buttons" >
+                        Continue session
+                    </div>
+                    <div class="small-buttons" >
+                        Cancel session
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ***** Counting assistant *** -->
+        <div class="countingAssistant" >
+            <header>
+                <button class="icon-back" ></button>
+                <div class="header-title" >Counting assistant</div>
+                <div class="header-right" >GTC - Jelmerm</div>
+            </header>
+
+            <div class="content">
+                <div class="row row-height-30">
+                    <label class="row-label row-label-new-small" >Units per carton</label>
+                    <input class="row-input right row-input-new-small input-blue-border" id="unitsPerCarton" placeholder=""  autofocus="">
+                </div>
+                <div class="clear"></div>
+                <div class="row row-height-30">
+                    <label class="row-label row-label-new-small" >Cartons per layer</label>
+                    <input class="row-input right row-input-new-small input-blue-border" id="cartonsPerLayer" placeholder=""  autofocus="">
+                </div>
+                <div class="clear"></div>
+                <div class="row row-height-30">
+                    <label class="row-label row-label-new-small" >Layers</label>
+                    <input class="row-input right row-input-new-small input-blue-border" id="layers" placeholder=""  autofocus="">
+                </div>
+                <div class="clear"></div>
+                <div class="row row-margin-top row-height-30">
+                    <label class="row-label row-label-new-small" >Individual cartons</label>
+                    <input class="row-input right row-input-new-small input-blue-border" id="individualCartons" placeholder=""  autofocus="">
+                </div>
+                <div class="clear"></div>
+                <div class="row row-height-30">
+                    <label class="row-label row-label-new-small" >Individual units</label>
+                    <input class="row-input right row-input-new-small input-blue-border" id="individualUnits" placeholder=""  autofocus="">
+                </div>
+                <div class="clear"></div>
+                <div class="row row-margin-top row-height-30">
+                    <label class="row-label row-label-new" >Total cartons</label>
+                    <input class="row-input right row-input-new input-bold" readonly="readonly" id="totalCartons" placeholder=""  autofocus="">
+                </div>
+                <div class="clear"></div>
+                <div class="row row-height-30">
+                    <label class="row-label row-label-new" >Total units</label>
+                    <input class="row-input right row-input-new input-bold" readonly="readonly" id="totalUnits" placeholder=""  autofocus="">
+                </div>
+
+                <div class="message" >
+                    <span ></span>
+                </div>
+
+                <div class="buttons bottom-fixed">
+                    <div class="long-buttons-container">
+                        <button class="long-buttons half-btn half-btn-new btn-gray" >Clear</button>
+                        <button id="counting-assistant-ok" class="long-buttons half-btn half-btn-new btn-right" >OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ***** Repalletize Autostore *** -->
+        <div class="inboundScanning" >
+            <header>
+                <button class="icon-back" ></button>
+                <div class="header-title" >Repalletize Autostore</div>
+                <div class="header-right" >GTC - Jelmerm</div>
+            </header>
+
+            <div class="content">
+                <div class="row">
+                    <label class="row-label" >Pallet</label>
+                    <input class="row-input right" id="repalletizePalletId" placeholder="Scan"  autofocus="">
+                </div>
+
+                <div class="scanned-result" >
+                    <div class="picklist-line">
+                        <label class="pl-row-label" >Inbound - Supplier</label>
+                        <span class="pl-item float-right" ></span>
+                    </div>
+                    <div class="picklist-line">
+                        <label class="pl-row-label" >Quantity current pallet</label>
+                        <span class="pl-item float-right" ></span>
+                    </div>
+                    <div class="picklist-line">
+                        <label class="pl-row-label" >Quantity per new pallet</label>
+                        <span class="pl-item float-right">
+                            <input class="row-input right row-input-qty-repalletize" id="repalletizeCalcPalletId" placeholder="" >
+                        </span>
+                    </div>
+                    <div class="picklist-line">
+                        <label class="pl-row-label" >Number of new pallets</label>
+                        <span class="pl-item float-right" ></span>
+                    </div>
+                    <div class="picklist-line">
+                        <label class="pl-row-label" >Loose goods</label>
+                        <span class="pl-item float-right" ></span>
+                    </div>
+                    <div class="picklist-line">
+                        <label class="pl-row-label" >End location</label>
+                        <span class="pl-item float-right" ></span>
+                    </div>
+                    <div class="picklist-line">
+                        <label class="pl-row-label" >Product number</label>
+                        <span class="pl-item float-right" ></span>
+                    </div>
+                    <div class="row-details row-details-small">
+                        <p ></p>
+                    </div>
+                </div>
+
+                <div class="message" >
+                    <span ></span>
+                </div>
+                <div class="buttons bottom-fixed inbound-start" >
+                    <div class="long-buttons high-buttons" >Process repalletize session</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ***** Validate TU-ID *** -->
+        <div class="inboundScanning" >
+            <header>
+                <button class="icon-back" ></button>
+                <div class="header-title" >Scan TU Id</div>
+                <div class="header-right" >GTC - Jelmerm</div>
+            </header>
+
+            <div class="content">
+                <div class="row" >
+                    <span style="
+                            padding-top: 7px;
+                            display: block;
+                            padding-left: 5px;
+                        " >Please put goods in a new TU</span>
+                </div>
+
+                <div class="row hidden" >
+                    <span style="
+                            padding-top: 7px;
+                            display: block;
+                            padding-left: 5px;
+                        " >Please put goods in </span>
+                </div>
+
+                <div class="row"  style="display: none;">
+                    <div class="quantity-picked hidden" >Quantity picked</div>
+                    <div class="quantity-picked-right" ></div>
+                </div>
+
+                <div class="clear"></div>
+                <div class="row">
+                    <label class="row-label" >Tu Id</label>
+                    <input class="row-input right" id="pickingTUID" placeholder="Scan"  autofocus="">
+                </div>
+
+                <div class="message" >
+                    <span ></span>
+                </div>
+            </div>
+
+            <div  style="display: none;">
+                <button class="change-picked-quantity-button button-darkblue long-buttons" >Change picked quantity</button>
+            </div>
+        </div>
+
+        <!-- ***** Box contents *** -->
+        <div class="inboundScanning" >
+            <header>
+                <button class="icon-back" ></button>
+                <div class="header-title" >Box contents</div>
+                <div class="header-right" >GTC - Jelmerm</div>
+            </header>
+
+            <div class="content" style="background-color: #f2f2f2; padding-bottom: 32px">
+                <div class="picklist-line" style="margin-bottom: 9px">
+                    <label class="pl-row-label" >Scan result</label>
+                    <span class="pl-item float-right" >-</span>
+                </div>
+
+                <div class="replenishment-actions-list" ></div>
+
+                <div class="buttons bottom-fixed">
+                    <div class="long-buttons-container">
+                        <button class="long-buttons half-btn half-btn-new btn-gray" >Box not correct</button>
+                        <button class="long-buttons half-btn half-btn-new btn-right" >Box correct</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ***** Scan box *** -->
+        <div class="inboundScanning" >
+            <header>
+                <button class="icon-back" ></button>
+                <div class="header-title" >Confirm box</div>
+                <div class="header-right" >GTC - Jelmerm</div>
+            </header>
+
+            <div class="content">
+                <div class="row">
+                    <label class="row-label" >Barcode</label>
+                    <input maxlength="14" class="row-input right" id="pickingScanBox" placeholder="Scan"  autofocus="">
+                </div>
+            </div>
+        </div>
+
+        <!-- ***** Pallet Measurement *** -->
+        <div class="inboundScanning" >
+            <header>
+                <button class="icon-back" ></button>
+                <div class="header-title" >Pallet measurement</div>
+                <div class="header-right" >GTC - Jelmerm</div>
+            </header>
+
+            <div class="content">
+                <div class="row">
+                    <label class="row-label" >Pallet</label>
+                    <input class="row-input right" id="palletMeasurementId" placeholder="Scan"  autofocus="">
+                </div>
+                <div class="row hidden" >
+                    <label class="row-label" >Scale</label>
+                    <input class="row-input right" id="scalePalletMeasurementId" placeholder="Scan"  autofocus="">
+                </div>
+                <div class="row hidden"  style="height: 50px">
+                    <label class="row-label"  style="line-height: 50px">Result</label>
+                    <span class="pl-item float-right"  style="
+                            font-size: 30px;
+                            line-height: 50px;
+                            color: #0085c3;
+                        ">undefined kg</span>
+                </div>
+
+                <div class="message" >
+                    <span ></span>
+                </div>
+                <div class="buttons bottom-fixed hidden" >
+                    <div class="long-buttons high-buttons" >Measure</div>
+                </div>
+
+                <div class="buttons bottom-fixed hidden" >
+                    <div class="long-buttons-container">
+                        <button class="long-buttons half-btn half-btn-new" >Measure again</button>
+                        <button class="long-buttons half-btn half-btn-new btn-right" >Next pallet</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ***** Inbound scanning *** -->
+        <div class="inboundScanning" >
+            <header>
+                <button class="icon-back" ></button>
+                <div class="header-title" >Inbound scanning</div>
+                <div class="header-right" >GTC - Jelmerm</div>
+            </header>
+
+            <div class="content">
+                <div class="row">
+                    <label class="row-label" >Pallet</label>
+                    <input class="row-input right" id="inboundPalletId" placeholder="Scan"  autofocus="">
+                </div>
+
+                <div class="scanned-result" >
+                    <div class="picklist-line">
+                        <label class="pl-row-label" >Inbound</label>
+                        <span class="pl-item float-right" ></span>
+                    </div>
+                    <div class="picklist-line">
+                        <label class="pl-row-label" >Supplier code</label>
+                        <span class="pl-item float-right" ></span>
+                    </div>
+                    <div class="picklist-line">
+                        <label class="pl-row-label" >Number of pallets</label>
+                        <span class="pl-item float-right" ></span>
+                    </div>
+                    <div class="picklist-line">
+                        <label class="pl-row-label" >Sorting location</label>
+                        <span class="pl-item float-right" ></span>
+                    </div>
+                </div>
+
+                <div class="message" >
+                    <span ></span>
+                </div>
+                <div class="buttons bottom-fixed inbound-start" >
+                    <div class="long-buttons high-buttons" >
+                        Start
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ***** Pallet movement show existing stock *** -->
+        <div class="showExistingStock" >
+            <header>
+                <button class="icon-back" ></button>
+                <div class="header-title" >Pallet </div>
+                <div class="header-right" >GTC - Jelmerm</div>
+            </header>
+            <div class="content">
+                <div>
+                    <div class="picklist-line picklist-line-half font12">
+                        <label class="pl-row-label font12">Product</label>
+                        <span class="pl-item float-right font12" ></span>
+                    </div>
+                </div>
+                <div>
+                    <div class="picklist-line picklist-line-half font12">
+                        <label class="pl-row-label font12">SGS</label>
+                        <span class="pl-item float-right font12" ></span>
+                    </div>
+                </div>
+                <div>
+                    <div class="picklist-line picklist-line-half font12">
+                        <label class="pl-row-label font12">SBC</label>
+                        <span class="pl-item float-right font12" ></span>
+                    </div>
+                </div>
+                <div>
+                    <div class="picklist-line picklist-line-half font12">
+                        <label class="pl-row-label font12">BBD</label>
+                        <span class="pl-item float-right font12" >22-06-2025</span>
+                    </div>
+                </div>
+                <div class="clear"></div>
+
+                <div class="picklist-line picklist-line-half picklist-line-grey font12" style="
+                        width: 45%;
+                        padding-left: 5px;
+                        padding-top: 8px;
+                        padding-bottom: 8px;
+                        height: auto;
+                    ">
+                    Location
+                </div>
+                <div class="picklist-line picklist-line-half picklist-line-grey font12" style="
+                        width: 45%;
+                        font-size: 10px;
+                        padding-top: 8px;
+                        padding-bottom: 8px;
+                        height: auto;
+                    ">
+                    Type
+                </div>
+                <div class="picklist-line picklist-line-half picklist-line-grey font12" style="
+                        width: 10%;
+                        font-size: 10px;
+                        text-align: right;
+                        padding-right: 5px;
+                        padding-top: 8px;
+                        padding-bottom: 8px;
+                        height: auto;
+                    ">
+                    Add
+                </div>
+                <div class="clear"></div>
+
+                <div class="replenishment-actions-list" ></div>
+
+                <div class="message" >
+                    <span ></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ***** Inbound scanning product SP *** -->
+        <div class="inboundScanningProductSP" >
+            <header>
+                <button class="icon-back" ></button>
+                <div class="header-title" >Pallet undefined</div>
+                <div class="header-right" >GTC - Jelmerm</div>
+            </header>
+            <div class="content">
+                <div>
+                    <div class="picklist-line">
+                        <label class="pl-row-label" >Inbound</label>
+                        <span class="pl-item float-right" ></span>
+                    </div>
+                    <div class="picklist-line">
+                        <label class="pl-row-label" >Supplier code</label>
+                        <span class="pl-item float-right" ></span>
+                    </div>
+                    <div class="picklist-line">
+                        <label class="pl-row-label">Product barcode</label>
+                        <span class="pl-item float-right" ></span>
+                    </div>
+                    <div class="picklist-line">
+                        <label class="pl-row-label">Product</label>
+                        <span class="pl-item float-right" ></span>
+                    </div>
+                    <div class="picklist-line">
+                        <label class="pl-row-label">Description</label>
+                        <span class="pl-item float-right" ></span>
+                    </div>
+                    <div class="picklist-line">
+                        <label class="pl-row-label">Pallet total</label>
+                        <span class="pl-item float-right" >NaN</span>
+                    </div>
+                </div>
+
+                <div class="message" >
+                    <span ></span>
+                </div>
+
+                <div class="buttons bottom-fixed pallet-ready-2" >
+                    <div class="long-buttons high-buttons" >Pallet ready for checking</div>
+                </div>
+                <div class="buttons bottom-fixed pallet-ready-2" >
+                    <div class="long-buttons high-buttons" >Set pallet not ready</div>
+                </div>
+                <div class="buttons bottom-fixed">
+                    <div class="long-buttons high-buttons" >Reprint label</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ***** Inbound scanning product *** -->
+        <div class="inboundScanningProduct" >
+            <header>
+                <button class="icon-back" ></button>
+                <div class="header-title" >Pallet undefined</div>
+                <div class="header-right" >GTC - Jelmerm</div>
+            </header>
+            <div class="content">
+                <div>
+                    <div class="picklist-line">
+                        <label class="pl-row-label" >Inbound</label>
+                        <span class="pl-item float-right" ></span>
+                    </div>
+                    <div class="picklist-line">
+                        <label class="pl-row-label" >Supplier code</label>
+                        <span class="pl-item float-right" ></span>
+                    </div>
+                </div>
+                <div class="row" >
+                    <label class="row-label row-label-new" >Product barcode</label>
+                    <input class="row-input right row-input-new" id="inboundProductId" placeholder="Scan"  autofocus="">
+                </div>
+                <div class="scanned-result" >
+                    <div class="picklist-line">
+                        <label class="pl-row-label">Product barcode</label>
+                        <span class="pl-item float-right" ></span>
+                    </div>
+                </div>
+                <div class="scanned-result" >
+                    <div class="picklist-line">
+                        <label class="pl-row-label">Product</label>
+                        <span class="pl-item float-right" ></span>
+                    </div>
+                </div>
+                <div class="scanned-result" >
+                    <div class="picklist-line">
+                        <label class="pl-row-label">Description</label>
+                        <span class="pl-item float-right" ></span>
+                    </div>
+                </div>
+
+                <div class="expected-received" >
+                    <div class="picklist-line">
+                        <label class="pl-row-label">Expected / Received</label>
+                        <span class="pl-item float-right" ></span>
+                    </div>
+                </div>
+                <div class="product-new-pallet" >
+                    <div class="picklist-line">
+                        <span class="pl-item" >This product will get a new pallet.</span>
+                    </div>
+                </div>
+                <div class="product-new-pallet" >
+                    <div class="picklist-line">
+                        <span class="pl-item"><span >This product will be moved to</span>
+                            <strong>Pallet
+                                <span ></span></strong></span>
+                    </div>
+                </div>
+                <div class="picklist-line hidden" >
+                    <label class="pl-row-label" >Destination</label>
+                    <span class="pl-item float-right" ></span>
+                </div>
+                <div class="product-new-pallet" >
+                    <div class="picklist-line">
+                        <span class="pl-item pl-item-red" >This product is expected on multiple lines.</span>
+                    </div>
+                </div>
+                <div class="product-new-pallet" >
+                    <div class="picklist-line">
+                        <span class="pl-item pl-item-red" >Damaged goods</span>
+                    </div>
+                </div>
+                <div class="product-new-pallet" >
+                    <div class="picklist-line" style="border-bottom: 1px solid #dddddd">
+                        <span class="pl-row-label" >Instructions</span>
+                    </div>
+
+                    <div ></div>
+                </div>
+                <div style="height: 50px">&nbsp;</div>
+                <div class="message" >
+                    <span ></span>
+                </div>
+                <div class="buttons bottom-fixed broken-product" >
+                    <div class="long-buttons broken-img high-buttons gray-button" >Broken</div>
+                    <input type="checkbox" class="brokenCheck" >
+                </div>
+                <div class="buttons bottom-fixed next-pallet visible" >
+                    <div class="long-buttons high-buttons" >Next pallet</div>
+                </div>
+                <div class="buttons bottom-fixed print-pallet" >
+                    <div class="long-buttons high-buttons" >Print palletsticker</div>
+                </div>
+                <div class="buttons bottom-fixed move-product" >
+                    <div class="long-buttons high-buttons" >Move product</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ***** Inbound scanning move product *** -->
+        <div class="inboundScanningMoveProduct" >
+            <header>
+                <button class="icon-back" ></button>
+                <div class="header-title" >Pallet undefined</div>
+                <div class="header-right" >GTC - Jelmerm</div>
+            </header>
+            <div class="content">
+                <div>
+                    <div class="picklist-line">
+                        <label class="pl-row-label" >Product barcode</label>
+                        <span class="pl-item float-right" ></span>
+                    </div>
+                    <div class="picklist-line" >
+                        <label class="pl-row-label" >Product</label>
+                        <span class="pl-item float-right" ></span>
+                    </div>
+                    <div class="picklist-line" >
+                        <label class="pl-row-label">Description</label>
+                        <span class="pl-item float-right" ></span>
+                    </div>
+                    <div class="expected-received" >
+                        <div class="picklist-line">
+                            <label class="pl-row-label">Expected / Received</label>
+                            <span class="pl-item float-right" ></span>
+                        </div>
+                    </div>
+                    <div class="picklist-line" >
+                        <label class="pl-row-label" >Pallet</label>
+                        <span class="pl-item float-right" ></span>
+                    </div>
+                    <div class="picklist-line" >
+                        <span class="pl-item"><span >Move product to</span>
+                            <strong>Pallet
+                                <span ></span></strong></span>
+                    </div>
+
+                    <div class="picklist-line qty-scan" >
+                        <label class="pl-row-label">Old amount</label>
+                        <span class="pl-item float-right" ></span>
+                    </div>
+                </div>
+                <div class="clear"></div>
+                <div class="row qty-scan" >
+                    <label class="row-label row-label-new" >Amount added</label>
+                    <input type="number" min="0" class="row-input right row-input-new" id="inboundProductQty" placeholder="Qty"  autofocus="">
+                </div>
+                <div>
+                    <div class="picklist-line qty-scan" >
+                        <label class="pl-row-label">New pallet total</label>
+                        <span class="pl-item float-right" ></span>
+                    </div>
+                </div>
+
+                <div class="row" >
+                    <label class="row-label" >Pallet</label>
+                    <input class="row-input right" id="inboundPalletMoveId" placeholder="Scan"  autofocus="">
+                </div>
+                <div class="picklist-line hidden" >
+                    <label class="pl-row-label" >Destination</label>
+                    <span class="pl-item float-right" ></span>
+                </div>
+                <div class="product-was-moved" >
+                    <div class="picklist-line picklist-line-full">
+                        <span class="pl-item"><span >Product moved to</span>
+                            <strong>P<span ></span></strong></span>
+                    </div>
+                </div>
+                <div class="pallet-ready-for-checking" >
+                    <div class="picklist-line picklist-line-full">
+                        <span class="pl-item"><strong>P<span ></span></strong>
+                            <span >ready for checking</span></span>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="product-new-pallet" >
+                        <div class="picklist-line">
+                            <span class="pl-item pl-item-red" >This product is expected on multiple lines.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="product-new-pallet" >
+                        <div class="picklist-line">
+                            <span class="pl-item pl-item-red" >Damaged goods</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="message" >
+                    <span ></span>
+                </div>
+                <div class="buttons bottom-fixed counting-assistant" >
+                    <div class="long-buttons high-buttons high-buttons-padding-2" >Counting assistant</div>
+                </div>
+                <div class="buttons bottom-fixed cancel-inbound" >
+                    <div class="long-buttons high-buttons" >Cancel</div>
+                </div>
+                <div class="buttons bottom-fixed pallet-ready" >
+                    <div class="long-buttons high-buttons" >Pallet full</div>
+                </div>
+                <div class="buttons bottom-fixed goto-next-product" >
+                    <div class="long-buttons high-buttons" >Confirm</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ***** Cancel Pallet Split *** -->
+        <div class="warningCancelMoverequest" >
+            <header>
+                <div class="header-right" >GTC - Jelmerm</div>
+            </header>
+            <div class="content">
+                <div class="middleContent">
+                    <div class="confirmMessage" >Are you sure you want to place the pallet on location undefined?</div>
+                    <div class="buttons">
+                        <div class="small-buttons" >
+                            No
+                        </div>
+                        <div class="small-buttons" >
+                            Yes
+                        </div>
+                    </div>
+                    <div class="message" >
+                        <span ></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ***** Cancel Pallet Movement *** -->
+        <div class="warningCancelMoverequest" >
+            <header>
+                <div class="header-right" >GTC - Jelmerm</div>
+            </header>
+            <div class="content">
+                <div class="middleContent">
+                    <div class="confirmMessage" >Are you sure you want to place the pallet on location undefined?</div>
+                    <div class="buttons">
+                        <div class="small-buttons" >
+                            No
+                        </div>
+                        <div class="small-buttons" >
+                            Yes
+                        </div>
+                    </div>
+                    <div class="message" >
+                        <span ></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ***** Repleshment actions *** -->
+
+        <div class="warningCancelMoverequest" >
+            <header>
+                <div class="header-right" >GTC - Jelmerm</div>
+            </header>
+            <div class="content">
+                <div class="middleContent">
+                    <div class="confirmMessage" >This is a product with a BBD date, place the goods FIFO on the location.</div>
+                    <div class="buttons">
+                        <div class="long-buttons" >
+                            OK
+                        </div>
+                    </div>
+                    <div class="message" >
+                        <span ></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="warningCancelMoverequest" >
+            <header>
+                <div class="header-right" >GTC - Jelmerm</div>
+            </header>
+            <div class="content">
+                <div class="middleContent">
+                    <div class="confirmMessage" >This is a product with a BBD date, place the goods FIFO on the location.</div>
+                    <div class="buttons">
+                        <div class="long-buttons" >
+                            OK
+                        </div>
+                    </div>
+                    <div class="message" >
+                        <span ></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="warningCancelMoverequest" >
+            <header>
+                <div class="header-right" >GTC - Jelmerm</div>
+            </header>
+            <div class="content">
+                <div class="middleContent">
+                    <div class="confirmMessage" >Are you sure you want to place the pallet on location undefined?</div>
+                    <div class="buttons">
+                        <div class="small-buttons" >
+                            No
+                        </div>
+                        <div class="small-buttons" >
+                            Yes
+                        </div>
+                    </div>
+                    <div class="message" >
+                        <span ></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cycleCountLocation" >
+            <header>
+                <button class="icon-back"  style="display: none;"></button>
+                <div class="header-title header-title-replenishment" ></div>
+                <button class="icon-refresh"  style="display: none;"></button>
+                <div class="header-right" >GTC - Jelmerm</div>
+            </header>
+
+            <div class="content">
+                <div  style="display: none;">
+                    <div class="replenishment-actions-list" ></div>
+                </div>
+
+                <div  style="display: none;">
+                    <div class="replenishment-actions-data" ></div>
+
+                    <div class="buttons bottom-fixed">
+                        <div class="long-buttons-container">
+                            <button class="long-buttons half-btn half-btn-new btn-gray" >Skip</button>
+                            <button class="long-buttons half-btn half-btn-new btn-right" >Start</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div  style="display: none;">
+                    <div class="replenishment-actions-data" ></div>
+                </div>
+
+                <div  style="display: none;">
+                    <div class="replenishment-actions-data" ></div>
+
+                    <div class="buttons bottom-fixed">
+                        <div class="long-buttons" >Cancel action</div>
+                    </div>
+                </div>
+
+                <div  style="display: none;">
+                    <div class="replenishment-actions-data" ></div>
+
+                    <div class="buttons bottom-fixed">
+                        <div class="replenishment-actions-data">
+                            <p class="clearfix">
+                                <span class="replenishment-actions-title-left"><label for="replenish-action-quantity" >Replenished</label></span>
+                                <span class="replenishment-actions-text-right">
+                                    <input id="replenish-action-quantity" type="text" >
+                                </span>
+                            </p>
+                        </div>
+
+                        <div class="long-buttons-container">
+                            <button class="long-buttons half-btn half-btn-new btn-gray" >Cancel action</button>
+                            <button class="long-buttons half-btn half-btn-new btn-right" >Confirm</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div  style="display: none;">
+                    <p class="replenishment-action-success-message replenishment-action-success-message-red" >Replenish successfull! Move remaining goods to end location.</p>
+
+                    <div class="buttons bottom-fixed">
+                        <div class="long-buttons" >Finalize movement</div>
+                    </div>
+                </div>
+
+                <div  style="display: none;">
+                    <div class="replenishment-actions-data" ></div>
+                </div>
+
+                <div  style="display: none;">
+                    <p class="replenishment-action-success-message replenishment-action-success-message-green" >Movement succesful</p>
+                    <div class="buttons bottom-fixed">
+                        <div class="long-buttons-container">
+                            <button class="long-buttons half-btn half-btn-new btn-gray" >OK</button>
+                            <button class="long-buttons half-btn half-btn-new btn-right" >Next action</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="message" >
+                    <span ></span>
+                </div>
+            </div>
+        </div>
+    
+
+</body></html>

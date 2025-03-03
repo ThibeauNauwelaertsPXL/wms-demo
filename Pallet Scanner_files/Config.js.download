@@ -1,0 +1,135 @@
+/* appConfig.json rules:
+!!!
+ after changing the appVersion, also change it on index html, at the following lines in order to invalidate the cache:
+  - <link href="css/index.css?v=2.0.0.21" rel="stylesheet" type="text/css"/>
+  - <script type='text/javascript' src='scripts/scanning.js?v=2.0.0.21'></script>
+  - <script type='text/javascript' src='scripts/Config.js?v=2.0.0.21'></script>
+!!!
+  WS_LandingPage - update the Landing Page url, include the ?reset parameter
+!!!
+  isDevelopmentMode - MAKE SURE TO NOT CHECK-IN THIS SETTING ON TRUE. THIS IS FOR DEVELOPMENT MODE ONLY
+!!!
+ */
+
+var WS = {
+    PUT_LOGIN: "/ScannerPalletLoginRequest.json",
+    //login put
+    GET_LOGIN: "/PalletScannerLoginRequestResponse.json",
+    //login get with parameter RequestGUID=
+    DEFAULT_TRUCK: "/ScannerDefaultTruck.json",
+    //UserId=admin&?Warehouse=FH
+    VALIDATE_TRUCK: "/ScannerValidateTruck.json",
+    //TruckId=<50001&? Warehouse=FH  || &?InGebruik=True&?LocationType=R
+    PALLET_MOVEMENT_STEP1: "/ScannerPalletMovementStep1.json",
+    //TruckId=&?Warehouse=&?PalletId=
+    GET_MOVEMENT_ID: "/ScannerPalletGetMovementIdStep1.json",
+    //GUID=
+    PALLET_MOVEMENT_STEP2: "/ScannerPalletMovementStep2.json",
+    PALLET_MOVEMENT_STEP2_SPLIT:
+        "/PalletScanner_AddPalletMovement_SplitPallet_Step2.json",
+    //TruckId=&?Warehouse=&?PalletId=
+    UNFINISHED_MOVEMENTS: "/PalletScanner_UnfinishedMovementsPerTruck.json",
+    //?TruckId=<50001&?Warehouse=FH&?UserId=admin
+    PUT_CYCLECOUNT_LOCATION: "/CycleCountHeader.json",
+    //GUID, UserID, Location
+    GET_CYCLECOUNT_COUNTID: "/CycleCount_CountID.json",
+    //GUID=
+    GET_CYCLECOUNT_LINES: "/CycleCount_Lines.json",
+    //?CycleCountId=721372980
+    PUT_CYCLECOUNT_LINE: "/CycleCount_LineUpdate.json",
+    //CycleCount_LineUpdate - XML
+    GET_CYCLECOUNT_HEADERINFORMATION: "/CycleCount_HeaderInformation.json",
+    //?CycleCountId=721372980
+    PUT_CYCLECOUNT_HEADER: "/CycleCountProcessHeader.json",
+    //xml name: CycleCount_ProcessHeader
+    GET_PICKREPLENISHMENT_STOCKSIGNAL: "/PickReplenishmentStockSignal.json",
+    //
+    PUT_PickReplenishmentLockSignal: "/PickReplenishmentLockSignal.json",
+    //GUID, SignalID, IsInProcessing
+    //xml Proc_SetSignal_LockForProcessing
+    GET_CHECK_PICKREPLENISHMENT_SIGNAL:
+        "/PalletScanner_PickReplenishment_CheckSignalLock.json",
+    //get parameter SignalId
+    GET_PICKREPLENISHMENT_LSUENTRIES: "/PickReplenishmentLSUEntries.json",
+    //
+    PUT_PRINT_STICKER: "/PickReplenishmentPrintSticker.json",
+    //xml name: PickReplenishment_Print_Sticker
+    GET_LSUCHECK_PALLETID: "/PalletScanner_LSUCheck_GetPalletID.json",
+    //parameters PalletId + State=10
+    PUT_LSUCHECK: "/PalletScanner_LSUCheck_AddManualCheck.json",
+    //xml LSU_ManualCheck
+    GET_PICKLIST: "/ScannerPalletPicklist.json",
+    //Picklist=506280212
+    GET_SCANNING_PICKLISTS: "/Scanning_Picklists_GET.json",
+    GET_SCANNING_PICKLISTS_PICKTOCART: "/Scanning_PickToCartPicklists_GET.json",
+    GET_SCANNING_PICKLIST_DETAILS: "/Scanning_Picklist_Details_GET.json",
+    GET_SCANNING_PICKLIST_DETAILS_PICKTOCART:
+        "/Scanning_PickToCartPicklist_Details_Get.json",
+    GET_SCANNING_PALLET_TYPES: "/Scanning_Pallets_Get.json",
+    SCANNING_GENERIC_PUT: "/Scanning_GenericActions_PUT.json",
+    PUT_GET_GetShipment: "/PalletScanner_GetShipment.json",
+    PUT_GET_MoveRequestGroup: "/Get_PalletMovementRequestGroup.json",
+    PUT_ProductMoved: "/InboundScanner_PutProductMoved.json",
+    PUT_Repalletize: "/Scanner_RepalletizeAutostore_StartSession_PUT.json",
+    PUT_Repalletize_Process:
+        "/Scanner_RepalletizeAutostore_FinishSession_PUT.json",
+    GET_InboundScanning: "/InboundScanner_GetGoodsReceiptPallet.json",
+    PUT_GET_InboundSortedPallet: "/InboundScanner_SortedPallet.json",
+    GET_ProductInboundScanning: "/InboundScanner_GetProductBarcode.json",
+    PUT_GET_MoveRequest: "/PalletScanner_GetPalletMoverequest.json",
+    PUT_GET_NextMoveRequest: "/PalletScanner_GetNextPalletMoverequest.json",
+    PUT_MoveToTruck_step1: "/PalletScanner_MoveToTruck.json",
+    PUT_SplitPallet: "/ValidatePalletAndGetProductInformation_SplitPallet.json",
+    manifest: "/ApplicationManifest.json",
+    GET_WAREHOUSES: "/PalletScanner_AvailableWarehousesForUser.json",
+    PUT_CANCEL_MOVE_REQUEST: "/PalletScanner_PutPMROnCancel.json",
+    PUT_GET_IS_PALLET_PART_OF_RESOURCE:
+        "/PalletScanner_GetScannedValue_CheckGroup.json",
+    GET_MERGINGPALLETS: "/MergingPallets_GetOutboundInformation.json",
+    PUT_MERGINGPALLETS: "/MergingPallets_PutMergingSession.json",
+    GET_PALLETTYPES: "/MergingPallets_GetPalletTypes.json",
+    PUT_PALLETORLOCATIE: "/PalletScanner_PutPalletOrLocationBarcode.json",
+    GET_LOCATIONPALLETINFO: "/PalletScanner_Get_Location_PalletInfo.json",
+    GET_SINGLEPALLETINFO: "/PalletScanner_Get_SinglePalletInfo.json",
+    GET_ProductBarcode: "/PalletScanner_Get_ProductBarcode.json",
+    PUT_InboundScanner: "/InboundScanner_PutScanPalletBarcode.json",
+    PUT_Generic_InboundScanner:
+        "/InboundScanner_PutGenericActionSortedPallet.json",
+    GET_PalletsForMerge:
+        "/MergingPallets_GetTransportShipmentOutboundPallets.json",
+    PUT_CountingAssistant: "/InboundScanner_PutCountingAssistant.json",
+    GET_SortedPalletList: "/InboundScanner_SortedPalletList.json",
+    GET_REPLENISHMENT_ACTIONS: "/PalletScanner_ReplenishmentActions_GET.json",
+    PUT_REPLENISHMENT_ACTION_TYPE:
+        "/PalletScanner_Replenishment_ActionType_PUT.json",
+    PUT_REPLENISHMENT_ACTIONS: "/PalletScanner_ReplenishmentActions_PUT.json",
+    GET_REPLENISHMENT_ACTION_QUANTITY:
+        "/PalletScanner_ReplenishmentActions_Quantities_GET.json",
+    PUT_CREATE_SORTED_PALLET: "/InboundScanner_CreateSortedPallet_PUT.json",
+    CycleCount_Cancel_PUT: "/CycleCount_Cancel_PUT.json",
+    PUT_CheckScannedStock: "/PalletScanner_CheckScannedStockLocation_PUT.json",
+    InboundChecking_ScanProductBarcode_PUT:
+        "/InboundChecking_ScanProductBarcode_PUT.json",
+    InboundScanner_SearchOpenSortedPallets_PUT:
+        "/InboundScanner_SearchOpenSortedPallets_PUT.json",
+    InboundChecking_PUTDetermineQuantity:
+        "/InboundChecking_PUTDetermineQuantity.json",
+    InboundScanner_DetermineInboundLine_PUT:
+        "/InboundScanner_DetermineInboundLine_PUT.json",
+    PUT_Validate_TUID: "/Validate_TUID_PUT.json",
+    PUT_PalletMeasurement_Step1:
+        "/PalletScanner_ValidateLSUOutboundForPalletMeasurement_PUT.json",
+    PUT_PalletMeasurement_Step2:
+        "/PalletScanner_StartPalletMeasuringModule_PUT.json",
+    PUT_PalletMeasurement_Step3:
+        "/PalletScanner_ExecutePalletMeasuringModule_PUT.json",
+    PUT_PalletMeasurement_Step4:
+        "/PalletScanner_FinishPalletMeasuringModule_PUT.json",
+    GET_Movement_Filters:
+        "/GetWarehouseSectionsWithOpenPalletMoveRequests.json",
+    GET_Show_Stock: "/WarehouseLocationProductInfo_GET.json",
+    GET_WarehouseInfo: "/GetWarehouseInfo.json",
+    GET_LocationCountRequest: "/LocationCountRequestInfo_GET.json",
+
+    GET_ScanningGiftsAndSamplesPicklist: "/Scanning_GiftsAndSamplesPicklist_Get.json"
+};
