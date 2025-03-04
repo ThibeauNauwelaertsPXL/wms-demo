@@ -158,12 +158,15 @@ C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/build/qt_6_
   C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/QDialog \
   C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/QLineEdit \
   C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/QPushButton \
+  C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/QTextEdit \
   C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qabstractbutton.h \
+  C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qabstractscrollarea.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qdialog.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qframe.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qlineedit.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qpushbutton.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qsizepolicy.h \
+  C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qtextedit.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qtwidgets-config.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qtwidgetsexports.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qtwidgetsglobal.h \

@@ -13,10 +13,15 @@ ConfigWindow::ConfigWindow(QWidget *parent)
     urlInput = new QLineEdit(this);
     urlInput->setPlaceholderText("Enter WMS URL (e.g., http://example.com:8080)...");
 
+    scriptInput = new QTextEdit(this);
+    scriptInput->setPlaceholderText("Enter JavaScript script here...");
+
     saveButton = new QPushButton("Save and Continue", this);
 
     layout->addWidget(new QLabel("WMS URL:"));
     layout->addWidget(urlInput);
+    layout->addWidget(new QLabel("Script:"));
+    layout->addWidget(scriptInput);
     layout->addWidget(saveButton);
 
     connect(saveButton, &QPushButton::clicked, this, &ConfigWindow::accept);
@@ -24,8 +29,13 @@ ConfigWindow::ConfigWindow(QWidget *parent)
     // Laad opgeslagen configuratie
     QSettings settings("Blooloc", "WMSIntegrator");
     urlInput->setText(settings.value("wmsUrl", "").toString());
+    scriptInput->setText(settings.value("script", "").toString());
 }
 
 QString ConfigWindow::getUrl() const {
     return urlInput->text();
+}
+
+QString ConfigWindow::getScript() const {
+    return scriptInput->toPlainText();
 }

@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QTextEdit>
 
 class ConfigWindow : public QDialog
 {
@@ -12,9 +13,11 @@ class ConfigWindow : public QDialog
 public:
     ConfigWindow(QWidget *parent = nullptr);
     QString getUrl() const;
+    QString getScript() const;
 
 private:
     QLineEdit *urlInput;
+    QTextEdit *scriptInput;
     QPushButton *saveButton;
 };
 

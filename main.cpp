@@ -23,10 +23,12 @@ int main(int argc, char *argv[])
     ConfigWindow configWindow;
     if (configWindow.exec() == QDialog::Accepted) {
         QString url = configWindow.getUrl();
+        QString script = configWindow.getScript();
 
         // Sla de configuratie op
         QSettings settings("Blooloc", "WMSIntegrator");
         settings.setValue("wmsUrl", url);
+        settings.setValue("script", script);
 
         // Start het hoofdvenster met de WebView
         WebViewWindow w(url);
