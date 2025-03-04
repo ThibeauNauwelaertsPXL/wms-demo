@@ -30,7 +30,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         logger.h
         logger.h
         logger.cpp
-        ConfigWindow.h
+        configwindow.h
+        configwindow.cpp
     )
     qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 else()

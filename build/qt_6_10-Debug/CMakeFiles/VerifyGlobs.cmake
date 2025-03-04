@@ -43,8 +43,10 @@ endif()
 file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/*.cpp")
 set(OLD_GLOB
   "C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/build/qt_6_10-Debug/CMakeFiles/3.29.3/CompilerIdCXX/CMakeCXXCompilerId.cpp"
+  "C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/build/qt_6_10-Debug/WMS-integrator_autogen/EWIEGA46WW/moc_ConfigWindow.cpp"
   "C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/build/qt_6_10-Debug/WMS-integrator_autogen/EWIEGA46WW/moc_webviewwindow.cpp"
   "C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/build/qt_6_10-Debug/WMS-integrator_autogen/mocs_compilation.cpp"
+  "C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/configwindow.cpp"
   "C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/logger.cpp"
   "C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/main.cpp"
   "C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/bench/async_bench.cpp"
@@ -105,6 +107,7 @@ file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/Users/thibe/Documents/Toeg
 set(OLD_GLOB
   "C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/ConfigWindow.h"
   "C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/build/qt_6_10-Debug/CMakeFiles/ShowIncludes/foo.h"
+  "C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/build/qt_6_10-Debug/WMS-integrator_autogen/include/ui_configwindow.h"
   "C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/build/qt_6_10-Debug/WMS-integrator_autogen/include/ui_webviewwindow.h"
   "C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/logger.h"
   "C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/bench/utils.h"
@@ -315,6 +318,7 @@ endif()
 # _directory_contents at C:/Qt/6.10.0/msvc2022_64/lib/cmake/Qt6LinguistTools/Qt6LinguistToolsMacros.cmake:55 (file)
 file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/*.ui")
 set(OLD_GLOB
+  "C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/configwindow.ui"
   "C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/webviewwindow.ui"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")

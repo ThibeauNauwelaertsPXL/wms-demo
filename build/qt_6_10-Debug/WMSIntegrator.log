@@ -1,0 +1,4 @@
+[2025-03-04 11:49:01.818] [file_logger] [info] Logger initialized.
+[2025-03-04 11:49:03.071] [file_logger] [info] WebViewWindow initialized.
+[2025-03-04 11:49:05.333] [file_logger] [info] Page loaded successfully.
+[2025-03-04 11:49:22.375] [file_logger] [info] WebViewWindow destroyed.

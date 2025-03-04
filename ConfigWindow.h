@@ -1,4 +1,0 @@
-#ifndef CONFIGWINDOW_H
-#define CONFIGWINDOW_H
-
-#endif // CONFIGWINDOW_H

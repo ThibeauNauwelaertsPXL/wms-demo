@@ -87,7 +87,6 @@ WMS-integrator_autogen/timestamp: \
 	C:/Qt/6.10.0/msvc2022_64/include/QtCore/qpropertyanimation.h \
 	C:/Qt/6.10.0/msvc2022_64/include/QtCore/qrect.h \
 	C:/Qt/6.10.0/msvc2022_64/include/QtCore/qrefcount.h \
-	C:/Qt/6.10.0/msvc2022_64/include/QtCore/qregularexpression.h \
 	C:/Qt/6.10.0/msvc2022_64/include/QtCore/qscopedpointer.h \
 	C:/Qt/6.10.0/msvc2022_64/include/QtCore/qscopeguard.h \
 	C:/Qt/6.10.0/msvc2022_64/include/QtCore/qset.h \
@@ -175,7 +174,6 @@ WMS-integrator_autogen/timestamp: \
 	C:/Qt/6.10.0/msvc2022_64/include/QtGui/qtguiexports.h \
 	C:/Qt/6.10.0/msvc2022_64/include/QtGui/qtguiglobal.h \
 	C:/Qt/6.10.0/msvc2022_64/include/QtGui/qtransform.h \
-	C:/Qt/6.10.0/msvc2022_64/include/QtGui/qvalidator.h \
 	C:/Qt/6.10.0/msvc2022_64/include/QtGui/qwindowdefs.h \
 	C:/Qt/6.10.0/msvc2022_64/include/QtGui/qwindowdefs_win.h \
 	C:/Qt/6.10.0/msvc2022_64/include/QtNetwork/qssl.h \
@@ -200,20 +198,19 @@ WMS-integrator_autogen/timestamp: \
 	C:/Qt/6.10.0/msvc2022_64/include/QtWebEngineWidgets/QWebEngineView \
 	C:/Qt/6.10.0/msvc2022_64/include/QtWebEngineWidgets/qtwebenginewidgetsglobal.h \
 	C:/Qt/6.10.0/msvc2022_64/include/QtWebEngineWidgets/qwebengineview.h \
+	C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/QDialog \
 	C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/QLabel \
 	C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/QLineEdit \
 	C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/QMainWindow \
 	C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/QPushButton \
-	C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/QSpinBox \
 	C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qabstractbutton.h \
-	C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qabstractspinbox.h \
+	C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qdialog.h \
 	C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qframe.h \
 	C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qlabel.h \
 	C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qlineedit.h \
 	C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qmainwindow.h \
 	C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qpushbutton.h \
 	C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qsizepolicy.h \
-	C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qspinbox.h \
 	C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qtabwidget.h \
 	C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qtwidgets-config.h \
 	C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qtwidgetsexports.h \
@@ -1374,11 +1371,13 @@ WMS-integrator_autogen/timestamp: \
 	C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Platform/Windows.cmake \
 	C:/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Platform/WindowsPaths.cmake \
 	C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/CMakeLists.txt \
+	C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/ConfigWindow.h \
 	C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/build/qt_6_10-Debug/.qt/qml_imports/WMS-integrator_conf.cmake \
 	C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/build/qt_6_10-Debug/.qtc/package-manager/auto-setup.cmake \
 	C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/build/qt_6_10-Debug/CMakeFiles/3.29.3/CMakeCXXCompiler.cmake \
 	C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/build/qt_6_10-Debug/CMakeFiles/3.29.3/CMakeRCCompiler.cmake \
 	C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/build/qt_6_10-Debug/CMakeFiles/3.29.3/CMakeSystem.cmake \
+	C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/configwindow.cpp \
 	C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/logger.cpp \
 	C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/logger.h \
 	C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/main.cpp \

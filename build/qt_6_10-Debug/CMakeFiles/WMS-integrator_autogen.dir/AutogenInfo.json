@@ -1661,6 +1661,11 @@
 	"SOURCES" : 
 	[
 		[
+			"C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/configwindow.cpp",
+			"MU",
+			null
+		],
+		[
 			"C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/logger.cpp",
 			"MU",
 			null

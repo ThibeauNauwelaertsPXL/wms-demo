@@ -1,8 +1,9 @@
+#include "configwindow.h"
 #include "webviewwindow.h"
-
 #include <QApplication>
 #include <QLocale>
 #include <QTranslator>
+#include <QSettings>
 
 int main(int argc, char *argv[])
 {
@@ -17,7 +18,21 @@ int main(int argc, char *argv[])
             break;
         }
     }
-    WebViewWindow w;
-    w.show();
-    return a.exec();
+
+    // Toon eerst het configuratiescherm
+    ConfigWindow configWindow;
+    if (configWindow.exec() == QDialog::Accepted) {
+        QString url = configWindow.getUrl();
+
+        // Sla de configuratie op
+        QSettings settings("Blooloc", "WMSIntegrator");
+        settings.setValue("wmsUrl", url);
+
+        // Start het hoofdvenster met de WebView
+        WebViewWindow w(url);
+        w.show();
+        return a.exec();
+    }
+
+    return 0; // Sluit de app als de configuratie wordt geannuleerd
 }
