@@ -273,6 +273,7 @@ endif()
 # _directory_contents at C:/Qt/6.10.0/msvc2022_64/lib/cmake/Qt6LinguistTools/Qt6LinguistToolsMacros.cmake:55 (file)
 file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/*.js")
 set(OLD_GLOB
+  "C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/script.js"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")

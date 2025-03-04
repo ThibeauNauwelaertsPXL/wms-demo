@@ -4,7 +4,7 @@
 #include <QDialog>
 #include <QLineEdit>
 #include <QPushButton>
-#include <QTextEdit>
+#include <QFileDialog>
 
 class ConfigWindow : public QDialog
 {
@@ -13,12 +13,16 @@ class ConfigWindow : public QDialog
 public:
     ConfigWindow(QWidget *parent = nullptr);
     QString getUrl() const;
-    QString getScript() const;
+    QString getScriptPath() const;
+
+private slots:
+    void uploadScript();
 
 private:
     QLineEdit *urlInput;
-    QTextEdit *scriptInput;
+    QPushButton *uploadButton;
     QPushButton *saveButton;
+    QString scriptFilePath;
 };
 
 #endif // CONFIGWINDOW_H

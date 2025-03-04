@@ -19,22 +19,22 @@ int main(int argc, char *argv[])
         }
     }
 
-    // Toon eerst het configuratiescherm
+    // Show the configuration window
     ConfigWindow configWindow;
     if (configWindow.exec() == QDialog::Accepted) {
         QString url = configWindow.getUrl();
-        QString script = configWindow.getScript();
+        QString scriptPath = configWindow.getScriptPath(); // Get the script file path
 
-        // Sla de configuratie op
+        // Save the configuration
         QSettings settings("Blooloc", "WMSIntegrator");
         settings.setValue("wmsUrl", url);
-        settings.setValue("script", script);
+        settings.setValue("scriptPath", scriptPath); // Save the script file path
 
-        // Start het hoofdvenster met de WebView
+        // Start the main window with the WebView
         WebViewWindow w(url);
         w.show();
         return a.exec();
     }
 
-    return 0; // Sluit de app als de configuratie wordt geannuleerd
+    return 0; // Close the app if the configuration is canceled
 }

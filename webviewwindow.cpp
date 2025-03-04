@@ -6,6 +6,7 @@
 #include <QGraphicsOpacityEffect>
 #include <QPropertyAnimation>
 #include "Logger.h"
+#include <QFile>
 
 WebViewWindow::WebViewWindow(const QString &url, QWidget *parent)
     : QMainWindow(parent), ui(new Ui::WebViewWindow)
@@ -43,16 +44,40 @@ WebViewWindow::WebViewWindow(const QString &url, QWidget *parent)
         webView->load(QUrl(url));
     }
 
+    // Inside WebViewWindow constructor, in the loadFinished lambda function
     connect(webView, &QWebEngineView::loadFinished, this, [this](bool ok) {
         if (ok) {
             Logger::getLogger()->info("Page loaded successfully.");
 
             QSettings settings("Blooloc", "WMSIntegrator");
-            QString script = settings.value("script", "").toString();
+            QString scriptPath = settings.value("scriptPath", "").toString(); // Get script file path
 
-            if (!script.isEmpty()) {
-                Logger::getLogger()->info("Executing JavaScript.");
-                webView->page()->runJavaScript(script);
+            if (!scriptPath.isEmpty()) {
+                QFile file(scriptPath);
+                if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+                    QString scriptContent = file.readAll();
+                    file.close();
+
+                    qDebug() << "Executing script from file:" << scriptPath;
+                    Logger::getLogger()->info("Executing JavaScript from file.");
+
+                    // Wrap the script in a try-catch block to handle errors
+                    QString wrappedScript = R"(
+                        try {
+                            )" + scriptContent + R"(
+                        } catch (e) {
+                            console.error("Error executing script:", e);
+                        }
+                    )";
+
+                    webView->page()->runJavaScript(wrappedScript);
+                } else {
+                    Logger::getLogger()->error("Failed to open script file.");
+                    qDebug() << "Error: Failed to open script file!";
+                }
+            } else {
+                Logger::getLogger()->warn("No scriptPath found in settings.");
+                qDebug() << "Error: scriptPath is empty!";
             }
         } else {
             Logger::getLogger()->error("Failed to load page.");

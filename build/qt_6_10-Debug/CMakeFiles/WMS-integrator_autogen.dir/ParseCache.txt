@@ -22,6 +22,7 @@ C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/ConfigWindo
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/qbytearrayalgorithms.h
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/qbytearraylist.h
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/qbytearrayview.h
+ mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/qcalendar.h
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/qchar.h
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/qcompare.h
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/qcompare_impl.h
@@ -35,9 +36,15 @@ C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/ConfigWindo
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/qcontiguouscache.h
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/qdarwinhelpers.h
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/qdatastream.h
+ mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/qdatetime.h
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/qdebug.h
+ mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/qdir.h
+ mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/qdirlisting.h
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/qendian.h
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/qexceptionhandling.h
+ mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/qfile.h
+ mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/qfiledevice.h
+ mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/qfileinfo.h
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/qflags.h
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/qfloat16.h
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/qforeach.h
@@ -48,12 +55,14 @@ C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/ConfigWindo
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/qglobalstatic.h
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/qhash.h
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/qhashfunctions.h
+ mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/qiodevice.h
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/qiodevicebase.h
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/qiterable.h
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/qiterator.h
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/qlatin1stringview.h
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/qline.h
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/qlist.h
+ mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/qlocale.h
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/qlogging.h
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/qmalloc.h
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/qmap.h
@@ -109,6 +118,7 @@ C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/ConfigWindo
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/qtenvironmentvariables.h
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/qtextstream.h
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/qtformat_impl.h
+ mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/qtimezone.h
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/qtmetamacros.h
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/qtnoop.h
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/qtpreprocessorsupport.h
@@ -158,27 +168,25 @@ C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/ConfigWindo
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtGui/qwindowdefs.h
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtGui/qwindowdefs_win.h
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/QDialog
+ mdp:C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/QFileDialog
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/QLineEdit
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/QPushButton
- mdp:C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/QTextEdit
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qabstractbutton.h
- mdp:C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qabstractscrollarea.h
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qdialog.h
+ mdp:C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qfiledialog.h
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qframe.h
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qlineedit.h
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qpushbutton.h
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qsizepolicy.h
- mdp:C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qtextedit.h
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qtwidgets-config.h
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qtwidgetsexports.h
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qtwidgetsglobal.h
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qwidget.h
  mdp:C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/ConfigWindow.h
+C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/logger.h
+C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/main.cpp
 C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/webviewwindow.cpp
  uic:./ui_webviewwindow.h
-C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/main.cpp
-C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/logger.h
-C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/logger.cpp
 C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/webviewwindow.h
  mmc:Q_OBJECT
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/QDebug
@@ -434,4 +442,5 @@ C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/webviewwind
  mdp:C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/tweakme.h
  mdp:C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/version.h
  mdp:C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/webviewwindow.h
+C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/logger.cpp
 C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/configwindow.cpp
