@@ -174,12 +174,14 @@ C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/ConfigWindo
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qtwidgetsglobal.h
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qwidget.h
  mdp:C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/ConfigWindow.h
-C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/logger.h
-C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/main.cpp
 C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/webviewwindow.cpp
  uic:./ui_webviewwindow.h
+C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/main.cpp
+C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/logger.h
+C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/logger.cpp
 C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/webviewwindow.h
  mmc:Q_OBJECT
+ mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/QDebug
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/QFlags
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/QList
  mdp:C:/Qt/6.10.0/msvc2022_64/include/QtCore/QPropertyAnimation
@@ -432,5 +434,4 @@ C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/webviewwind
  mdp:C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/tweakme.h
  mdp:C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/version.h
  mdp:C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/webviewwindow.h
-C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/logger.cpp
 C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/configwindow.cpp

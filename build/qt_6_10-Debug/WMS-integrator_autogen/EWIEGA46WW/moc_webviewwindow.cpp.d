@@ -1,4 +1,5 @@
 C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/build/qt_6_10-Debug/WMS-integrator_autogen/EWIEGA46WW/moc_webviewwindow.cpp: C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/webviewwindow.h \
+  C:/Qt/6.10.0/msvc2022_64/include/QtCore/QDebug \
   C:/Qt/6.10.0/msvc2022_64/include/QtCore/QFlags \
   C:/Qt/6.10.0/msvc2022_64/include/QtCore/QList \
   C:/Qt/6.10.0/msvc2022_64/include/QtCore/QPropertyAnimation \
