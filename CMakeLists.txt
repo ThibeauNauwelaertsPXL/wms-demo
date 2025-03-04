@@ -27,6 +27,10 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(WMS-integrator
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
+        logger.h
+        logger.h
+        logger.cpp
+        ConfigWindow.h
     )
     qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 else()

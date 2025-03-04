@@ -8,7 +8,7 @@
 #include <QSpinBox>
 #include <QLabel>
 #include <QPropertyAnimation>
-#include "spdlog/spdlog.h"
+#include "logger.h"
 
 namespace Ui {
 class WebViewWindow;
@@ -22,18 +22,21 @@ public:
     WebViewWindow(QWidget *parent = nullptr);
     ~WebViewWindow();
 
+    void setPort(int port);
+
 private slots:
     void loadWMS();
-    void saveSettings();
 
 private:
     Ui::WebViewWindow *ui;
     QWebEngineView *webView;
     QLineEdit *urlInput;
     QPushButton *loadButton;
-    QSpinBox *portInput;
+    QLineEdit *portInput;
     QLabel *toastLabel;
     QPropertyAnimation *toastAnimation;
+
+    int port;
 
     void showToast(const QString &message);
 };

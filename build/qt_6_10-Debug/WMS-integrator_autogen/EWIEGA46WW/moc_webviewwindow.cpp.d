@@ -219,12 +219,15 @@ C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/build/qt_6_
   C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qtwidgetsexports.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qtwidgetsglobal.h \
   C:/Qt/6.10.0/msvc2022_64/include/QtWidgets/qwidget.h \
+  C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/logger.h \
   C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/common-inl.h \
   C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/common.h \
   C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/details/backtracer-inl.h \
   C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/details/backtracer.h \
   C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/details/circular_q.h \
   C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/details/console_globals.h \
+  C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/details/file_helper-inl.h \
+  C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/details/file_helper.h \
   C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/details/fmt_helper.h \
   C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/details/log_msg-inl.h \
   C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/details/log_msg.h \
@@ -251,6 +254,10 @@ C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/build/qt_6_
   C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/pattern_formatter.h \
   C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/sinks/ansicolor_sink-inl.h \
   C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/sinks/ansicolor_sink.h \
+  C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/sinks/base_sink-inl.h \
+  C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/sinks/base_sink.h \
+  C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/sinks/basic_file_sink-inl.h \
+  C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/sinks/basic_file_sink.h \
   C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/sinks/sink-inl.h \
   C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/sinks/sink.h \
   C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/spdlog/include/spdlog/spdlog-inl.h \

@@ -1560,6 +1560,18 @@
 	"HEADERS" : 
 	[
 		[
+			"C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/ConfigWindow.h",
+			"MU",
+			"EWIEGA46WW/moc_ConfigWindow.cpp",
+			null
+		],
+		[
+			"C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/logger.h",
+			"MU",
+			"EWIEGA46WW/moc_logger.cpp",
+			null
+		],
+		[
 			"C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/webviewwindow.h",
 			"MU",
 			"EWIEGA46WW/moc_webviewwindow.cpp",
@@ -1648,6 +1660,11 @@
 	"SETTINGS_FILE" : "C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/build/qt_6_10-Debug/CMakeFiles/WMS-integrator_autogen.dir/AutogenUsed.txt",
 	"SOURCES" : 
 	[
+		[
+			"C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/logger.cpp",
+			"MU",
+			null
+		],
 		[
 			"C:/Users/thibe/Documents/Toegepaste-informatica/Stage/WMS-integrator/main.cpp",
 			"MU",
